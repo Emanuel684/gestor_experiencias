@@ -5,6 +5,10 @@ import Login_page from './Pages/login_page';
 import Registro_page from './Pages/registro_page';
 import Inicio_page from './Pages/inicio_page';
 
+import 'bootstrap/dist/css/bootstrap.min.css';
+import $ from 'jquery';
+import Popper from 'popper.js';
+import 'bootstrap/dist/js/bootstrap.bundle.min';
 
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 

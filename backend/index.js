@@ -9,7 +9,8 @@ app.use(cors());
 app.use(express.json());
 
 // routes
-app.use("/api", require("./routes/alumnos"));
+app.use("/usuarios", require("./routes/usuarios"));
+app.use("/tareas", require("./routes/tareas"));
 
 
 app.set("port", process.env.PORT || 4545);

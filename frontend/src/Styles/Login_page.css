@@ -1,3 +1,10 @@
+.form-signin{
+  width: 100%;
+  max-width: 330px;
+  padding: 15px;
+  margin: auto;
+}
+/*
 .Main2Container-Login_page {
   padding: 5% 1%;
   margin: 7% 15% 0 15%;
@@ -102,3 +109,4 @@
     padding: 5vw;
   }
 }
+*/
