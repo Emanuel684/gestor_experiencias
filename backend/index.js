@@ -17,20 +17,19 @@ app.use("/tareas", require("./routes/tareas"));
 
 
 // Login con JWT
-const { pool } = '';
 
 app.post('/api/login', async (req, res) => {
-  let client = await pool.connect();
-	const { correo_electronico, numero_documento } = req.body;
-    
-    console.log(correo_electronico)
-    console.log(numero_documento)
+  const Usuarios = require('./models/Usuarios');
+	const { correo_electronico, contrasena } = req.body;
+    console.log('Correo electronico:',correo_electronico)
+    console.log('Contrasena:',contrasena)
     try{
-    const result = await client.query(`SELECT id_persona, tipo_usuario, estado_cuenta, foto_perfil, nombres, apellidos FROM persona WHERE tipo_usuario='${tipo_usuario}' AND correo_electronico='${correo_electronico}' AND numero_documento='${numero_documento}';`)
-
-    if(result.rows[0]){
-      console.log(result.rows[0])
-      const token = jwt.sign(result.rows[0], 'geek');
+      const result = await Usuarios.find({ correo_electronico: correo_electronico });
+      console.log(result)
+      console.log(result[0])
+    if(result){
+      console.log(result[0])
+      const token = jwt.sign({result}, 'geek');
 	    res.json({token});
     }else{
       res.json({message: 'Asegurese de ingresar los datos correctamente.'})
@@ -65,7 +64,7 @@ function verificarToken(req, res, next) {
 		res.sendStatus(403);
 	}
 }
-
+/*
 app.get("/api/user-datos/:id_persona/:tipo_usuario", async (req, res) => {
   let client = await pool.connect();
   const { id_persona, tipo_usuario } = req.params;
@@ -83,7 +82,7 @@ app.get("/api/user-datos/:id_persona/:tipo_usuario", async (req, res) => {
   } finally {
   }
 });
-
+*/
 
 // Fin Login
 

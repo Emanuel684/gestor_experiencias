@@ -10,27 +10,25 @@ class Login_usuarios extends React.Component {
     super(props);
     this.state = {
       form: {
-        correo_electronico: null,
-        numero_documento: null,
+        correo_electronico: '',
+        contrasena: '',
       },
+      id_usuario: '',
       login: false,
       token: null,
       datos: [],
       datos_user: null,
       datos_user2: null,
-      Bool1: false,
-      Bool2: false,
-      Bool3: false,
+      Bool1: false
     };
   }
 
 
   login = async () => {
     await axios
-      .post(`http://localhost:4535/api/login`, {
-        tipo_usuario: this.state.form.tipo_usuario,
+      .post(`http://localhost:4545/api/login`, {
         correo_electronico: this.state.form.correo_electronico,
-        numero_documento: this.state.form.numero_documento,
+        contrasena: this.state.form.contrasena
       })
       .then((res) => {
         console.log(res);
@@ -46,7 +44,7 @@ class Login_usuarios extends React.Component {
             "login",
             JSON.stringify({
               login: true,
-              token: res.data.token,
+              token: res.data.token
             })
           );
           this.login2();
@@ -61,7 +59,7 @@ class Login_usuarios extends React.Component {
     let token_authorization = "bearer " + this.state.token;
     console.log(token_authorization);
     await axios
-      .get(`http://localhost:4535/api/privada`, {
+      .get(`http://localhost:4545/api/privada`, {
         headers: {
           Authorization: `${token_authorization}`,
         },
@@ -71,9 +69,9 @@ class Login_usuarios extends React.Component {
         this.Ingreso();
         console.log(res);
         console.log(res.data);
-        console.log(res.data.data.id_persona);
-        this.setState({ id_persona: res.data.id_persona });
-        console.log(this.state.id_persona);
+        console.log('el resultado:',res.data.data.result[0]);
+        this.setState({ id_usuario: res.data.data.result[0]._id });
+        console.log('id del usuario en el estado',this.state.id_usuario);
       })
       .catch((err) => {
         console.log(err.massage);
@@ -81,52 +79,17 @@ class Login_usuarios extends React.Component {
   };
 
   Ingreso = async () => {
-    await axios
-      .get(
-        `http://localhost:4535/api/user-datos/${this.state.datos_user.id_persona}/${this.state.datos_user.tipo_usuario}`
-      )
-      .then((res) => {
-        console.log(
-          "Esta es la informacion de la tabla del usuario logeado:",
-          res.data[0]
-        );
-        console.log("Tipo_usuario:", this.state.datos_user.tipo_usuario);
-        if (this.state.datos_user.tipo_usuario == "Estudiante") {
-          console.log("Esta es la res.data[0]", res.data[0]);
-          // this.setState({datos_user2: res.data[0]})
+        if (this.state.id_usuario) {
+          console.log("Esta es el id_usuario", this.state.id_usuario);
           sessionStorage.setItem(
-            "id_estudiante",
+            "id_usuario",
             JSON.stringify({
-              id_estudiante: res.data[0].id_estudiante,
-            })
-          );
-          this.setState({ Bool3: true });
-        }
-        if (this.state.datos_user.tipo_usuario == "Maestro") {
-          //this.setState({datos_user2: res.data[0]})
-          sessionStorage.setItem(
-            "id_maestro",
-            JSON.stringify({
-              id_maestro: res.data[0].id_maestro,
-            })
-          );
-          this.setState({ Bool2: true });
-        }
-        if (this.state.datos_user.tipo_usuario == "Directivo") {
-          //this.setState({datos_user2: res.data[0]})
-          sessionStorage.setItem(
-            "id_directivo",
-            JSON.stringify({
-              id_directivo: res.data[0].id_directivo,
+              id_usuario: this.state.id_usuario
             })
           );
           this.setState({ Bool1: true });
         }
-      })
-      .catch((err) => {
-        console.log(err.massage);
-      });
-  };
+      }
 
 
   handleChange = async (e) => {
@@ -145,7 +108,7 @@ class Login_usuarios extends React.Component {
       <>
         <div className="text-center">
           <div className="form-signin">
-            <form>
+            
               <img
                 className="mb-4"
                 src="https://1.bp.blogspot.com/-9phAiObUAOk/X8BdHu3MhvI/AAAAAAAAIq8/re7gbeTQ214vkvIgjFiys4hNdQIs-eKAACLcBGAsYHQ/s999/login.png"
@@ -161,9 +124,9 @@ class Login_usuarios extends React.Component {
                 type="email"
                 id="inputEmail"
                 className="form-control"
-                placeholder="Email address"
-                required=""
-                autofocus=""
+                placeholder="Correo Electronico"
+                onChange={this.handleChange}
+                name="correo_electronico"
               />
               <label for="inputPassword" className="visually-hidden">
                 Contraseña
@@ -172,21 +135,28 @@ class Login_usuarios extends React.Component {
                 type="password"
                 id="inputPassword"
                 className="form-control"
-                placeholder="Password"
-                required=""
+                placeholder="Contraseña"
+                onChange={this.handleChange}
+                name="contrasena"
               />
               <div className="checkbox mb-3"></div>
-              <button className="w-100 btn btn-lg btn-primary" type="submit">
+              <button className="w-100 btn btn-lg btn-primary" onClick={this.login}>
                 Ingresar
               </button>
               <hr/>
               <Link to="/registro">
-              <button className="w-100 btn btn-lg btn-primary" type="submit">
+              <button className="w-100 btn btn-lg btn-primary">
                 Registrarse
               </button>
               </Link>
-              <p className="mt-5 mb-3 text-muted">© 2017–2021</p>
-            </form>
+            {/* Login */}
+            {this.state.Bool1 && (
+                  <Redirect
+                    to={{
+                      pathname: "/login/inicio",
+                    }}
+                  ></Redirect>
+                )}
           </div>
         </div>
       </>

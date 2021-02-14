@@ -1,0 +1,11 @@
+.col {
+    padding-bottom: 25px;
+}
+.foto-tarea-img{
+    border-radius: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    margin-top: 10px;
+}

@@ -20,20 +20,35 @@ class Inicio_page extends React.Component {
         id_usuario: "",
       },
       datos: [],
-      id_usuario: "60294a0c2318f1398c0580d6",
+      id_usuario: JSON.parse(sessionStorage.getItem("id_usuario"))
     };
   }
 
+  delete_tarea = async (id_tarea) => {
+    console.log('Esta es el id de la tarea:',id_tarea)
+    await axios
+      .delete(
+        `http://localhost:4545/tareas/delete-tarea/60294e1024e3c020c8ebb9be`
+      )
+      .then((res) => {
+        console.log("Se ha eliminado una tarea.");
+        this.componentDidMount();
+      })
+      .catch((err) => {
+        console.log(err.massage);
+      });
+  };
+
   //Petición post para agregar nuevas tareas
-  post_usuario = async () => {
+  post_tarea = async () => {
     await axios
       .post(`http://localhost:4545/tareas/new-tarea`, {
-        nombre: "Trabajo de gestor de tareas",
+        nombre: this.state.form.nombre,
         foto:
           "https://media.cnnchile.com/sites/2/2019/07/1505975578830-1505732141447-rnm-740x430.jpeg",
-        prioridad: "Alta",
-        fecha_vencimiento: "2021-02-15",
-        id_usuario: "60294a0c2318f1398c0580d6",
+        prioridad: this.state.form.prioridad,
+        fecha_vencimiento: this.state.form.fecha_vencimiento,
+        id_usuario: this.state.id_usuario,
       })
       .then((res) => {
         console.log("Se ha creado una nueva tarea");
@@ -49,12 +64,12 @@ class Inicio_page extends React.Component {
   componentWillMount() {
     axios
       .get(
-        `http://localhost:4545/tareas/all-tareas-usuario/${this.state.id_usuario}`
+        `http://localhost:4545/tareas/all-tareas-usuario/${this.state.id_usuario.id_usuario}`
       )
       .then((res) => {
         console.log(res.data);
         this.setState({
-          datos: res.data,
+          datos: res.data
         });
       })
       .catch((err) => {
@@ -116,13 +131,10 @@ class Inicio_page extends React.Component {
                         type="text"
                         className="form-control"
                         id="firstName"
-                        placeholder=""
+                        placeholder="Nombre de la tarea"
                         onChange={this.handleChange}
                         name="nombre"
                       />
-                      <div className="invalid-feedback">
-                        Valid first name is required.
-                      </div>
                     </div>
 
                     <div className="col-sm-6">
@@ -139,9 +151,6 @@ class Inicio_page extends React.Component {
                         <option value="Media">Media</option>
                         <option value="Baja">Baja</option>
                       </select>
-                      <div className="invalid-feedback">
-                        Valid last name is required.
-                      </div>
                     </div>
 
                     <div className="col-12">
@@ -158,9 +167,6 @@ class Inicio_page extends React.Component {
                         onChange={this.handleChange}
                         name="fecha_vencimiento"
                       />
-                      <div className="invalid-feedback">
-                        Please enter a valid email address for shipping updates.
-                      </div>
                     </div>
 
                     <div className="col-12">
@@ -175,20 +181,17 @@ class Inicio_page extends React.Component {
                         onChange={this.handleChange}
                         name="contrasena"
                       />
-                      <div className="invalid-feedback">
-                        Please enter your shipping address.
-                      </div>
-                    </div>
-                    <div className="foto-perfil-subida-img-trabajador">
+                      <div className="foto-tarea-img">
                       <img
-                        className="foto-perfil-img-trabajador"
+                        className="foto-tarea-img"
                         id="fotoPrev"
                         src="https://us.123rf.com/450wm/naropano/naropano1606/naropano160600550/58727711-fondo-gris-oscuro-el-dise%C3%B1o-de-textura-fondo-del-grunge-.jpg?ver=6"
                         alt="FOTOPERFIL"
                       />
                     </div>
+                    </div>
+                    
                   </div>
-
                 </form>
               </div>
               <div className="modal-footer">
@@ -203,7 +206,7 @@ class Inicio_page extends React.Component {
                   type="button"
                   className="btn btnimgUploader btn-primary"
                   data-dismiss="modal"
-                  onClick={this.peticionPut}
+                  onClick={this.post_tarea}
                 >
                   Crear
                 </button>
@@ -216,6 +219,17 @@ class Inicio_page extends React.Component {
         <header>
           <div className="navbar navbar-dark bg-dark shadow-sm">
             <div className="container">
+              <Link to="/">
+            <div
+                className="btn btn-danger"
+                type="button"
+                data-toggle="modal"
+                data-target="#imgUpload"
+              >
+                Regresar
+              </div>
+              </Link>
+
               <img
                 src="https://1.bp.blogspot.com/-9phAiObUAOk/X8BdHu3MhvI/AAAAAAAAIq8/re7gbeTQ214vkvIgjFiys4hNdQIs-eKAACLcBGAsYHQ/s999/login.png"
                 width="40"
@@ -229,15 +243,14 @@ class Inicio_page extends React.Component {
                 className="me-2"
                 viewBox="0 0 24 24"
               />
-              <strong>Emanuel Acevedo</strong>
-
+              
               <div
                 className="btn btn-primary"
                 type="button"
                 data-toggle="modal"
                 data-target="#imgUpload"
               >
-                Nuevo
+                Nueva tarea
               </div>
             </div>
           </div>
@@ -272,6 +285,7 @@ class Inicio_page extends React.Component {
                               <button
                                 type="button"
                                 className="btn btn-sm btn-danger"
+                                onClick={this.delete_tarea}
                               >
                                 Eliminar
                               </button>

@@ -43,7 +43,7 @@ router.put('/info-tarea/:id', async (req,res) => {
 
 
 // Eliminar un tarea
-router.delete('/delte-tarea/:id', async (req,res) => {
+router.delete('/delete-tarea/:id', async (req,res) => {
     const id = req.params.id;
     const tareas = await Tareas.findByIdAndDelete(id);
     res.json({message: 'Tarea eliminada.'});
