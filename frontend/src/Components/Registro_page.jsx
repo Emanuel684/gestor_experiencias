@@ -1,4 +1,5 @@
 import React from "react";
+import axios from 'axios';
 
 import "../Styles/Registro_page.css";
 
@@ -13,9 +14,53 @@ class Login_usuarios extends React.Component {
         apellidos: "",
         correo_electronico: "",
         contrasena: "",
+        confirmar_contrasena: "",
       },
+      Bool1: false
     };
   }
+
+  //Petición post para agregar nuevos usuarios
+  post_usuario = async () => {
+    await axios
+      .post(`http://localhost:4545/usuarios/new-usuario`, {
+        nombres: this.state.form.nombres,
+        apellidos: this.state.form.apellidos,
+        correo_electronico: this.state.form.correo_electronico,
+        contrasena: this.state.form.contrasena,
+      })
+      .then((res) => {
+        console.log("Se ha creado un nuevo usuario");
+        // this.post_email();
+        this.setState({Bool1: true })
+      })
+      .catch((err) => {
+        console.log(err.massage);
+      });
+  };
+  //Fin post
+
+  //Petición post para enviar un correo al nuevo usuario
+  post_email = async () => {
+    await axios
+      .post(`http://localhost:4535/send`, {
+        to: this.state.form.correo_electronico,
+        subject: "Bienvenido a Colegio Geek",
+        full_name: `${
+          this.state.form.nombres + " " + this.state.form.apellidos
+        }`,
+      })
+      .then((res) => {
+        console.log(res.data);
+        this.setState({
+          datos: res.data,
+        });
+      })
+      .catch((err) => {
+        console.log(err.massage);
+      });
+  };
+  //Fin post
 
   handleChange = async (e) => {
     e.persist();
@@ -31,86 +76,126 @@ class Login_usuarios extends React.Component {
   render() {
     return (
       <>
-        <div className="Main2Container-Registro_page">
-          <div id="SelecContainer-Registro_page">
-            <div id="Form2_21">
-              <img
-                className="ImgProfile"
-                src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Circle-icons-profile.svg/1200px-Circle-icons-profile.svg.png"
-              />
+        <div className="bg-light">
+          <div className="container">
+            <main>
+              <div className="py-5 text-center">
+                <h2>Advertencia</h2>
+                <p className="lead">
+                Asegúrese que la información subministrada este correctamente digitada.
+                </p>
+              </div>
+
               <div>
-                <img
-                  src="https://img.icons8.com/carbon-copy/2x/camera--v2.png"
-                  alt="Profile img"
-                  className="inline"
-                  style={{ height: 3 + "vw", marginLeft: 0 }}
-                />
-                <p className="inline">Foto de perfil</p>
+                <div>
+                  <h4 className="mb-3">Formulario de registro</h4>
+                  <form className="needs-validation" novalidate="">
+                    <div className="row g-3">
+                      <div className="col-sm-6">
+                        <label for="firstName" className="form-label">
+                          Nombres
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          id="firstName"
+                          placeholder=""
+                          onChange={this.handleChange}
+                          name="nombres"
+                        />
+                        <div className="invalid-feedback">
+                          Valid first name is required.
+                        </div>
+                      </div>
+
+                      <div className="col-sm-6">
+                        <label for="lastName" className="form-label">
+                          Apellidos
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          id="lastName"
+                          onChange={this.handleChange}
+                          name="apellidos"
+                        />
+                        <div className="invalid-feedback">
+                          Valid last name is required.
+                        </div>
+                      </div>
+
+                      <div className="col-12">
+                        <label for="email" className="form-label">
+                          Email
+                        </label>
+                        <input
+                          type="email"
+                          className="form-control"
+                          id="email"
+                          placeholder="you@example.com"
+                          onChange={this.handleChange}
+                          name="correo_electronico"
+                        />
+                        <div className="invalid-feedback">
+                          Please enter a valid email address for shipping
+                          updates.
+                        </div>
+                      </div>
+
+                      <div className="col-12">
+                        <label for="address" className="form-label">
+                          Contraseña
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          id="address"
+                          placeholder="1234 Main St"
+                          required=""
+                          onChange={this.handleChange}
+                          name="contrasena"
+                        />
+                        <div className="invalid-feedback">
+                          Please enter your shipping address.
+                        </div>
+                      </div>
+
+                      <div className="col-12">
+                        <label for="address2" className="form-label">
+                          Confimar Contraseña
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          id="address2"
+                          placeholder="Apartment or suite"
+                          onChange={this.handleChange}
+                          name="confirmar_contrasena"
+                        />
+                      </div>
+                    </div>
+
+                    <hr className="my-4" />
+
+                    <button
+                      className="w-100 btn btn-primary btn-lg"
+                      type="submit"
+                      onClick={this.post_usuario}
+                    >
+                      Registrar
+                    </button>
+                    {/* Login */}
+                {this.state.Bool1 && (
+                  <Redirect
+                    to={{
+                      pathname: "/",
+                    }}
+                  ></Redirect>
+                )}
+                  </form>
+                </div>
               </div>
-              <input
-                accept="image/*"
-                id="contained-button-pdf"
-                type="file"
-                onChange={this.handleChange}
-                name="foto_perfil"
-              />
-            </div>
-            <div id="Form2_2">
-              <div className="Form2_2_2">
-                <input
-                  className="REInput"
-                  id="NombreIn"
-                  placeholder="Nombres"
-                  autoComplete="off"
-                  onChange={this.handleChange}
-                  name="nombres"
-                />
-                <input
-                  className="REInput"
-                  id="ApellidoIn"
-                  placeholder="Apellidos"
-                  autoComplete="off"
-                  onChange={this.handleChange}
-                  name="apellidos"
-                />
-              </div>
-            </div>
-            <div id="Form2_2">
-              <div className="Form2_2_2">
-                <input
-                  className="REInput"
-                  id="CorreoIn"
-                  type="text"
-                  placeholder="Correo electronico"
-                  autoComplete="off"
-                  onChange={this.handleChange}
-                  name="correo_electronico"
-                />
-                <input
-                  className="REInput"
-                  id="CorreoIn"
-                  type="text"
-                  placeholder="Contraseña"
-                  autoComplete="off"
-                  onChange={this.handleChange}
-                  name="contrasena"
-                />
-              </div>
-            </div>
-            <div className="Form2_2_2">
-              <input
-                onClick={this.post_maestro}
-                className="REInput"
-                type="button"
-                value="Agregar"
-              />
-              <input
-                type="button"
-                onClick={this.Cambio}
-                className="REInput"
-                value="Cancelar"
-              />
-            </div>
+            </main>
           </div>
         </div>
       </>

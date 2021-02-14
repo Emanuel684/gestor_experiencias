@@ -50,24 +50,6 @@
   color: black;
 }
 
-#ImgRMas {
-  background-image: url(https://image.flaticon.com/icons/svg/25/25668.svg);
-  width: 40px;
-  height: 40px;
-  border: none;
-  background-color: transparent;
-  background-position-x: center;
-  background-position-y: center;
-  border-radius: 4px;
-  background-repeat: no-repeat;
-  background-size: 40px 40px;
-}
-
-.ImgRMas {
-  width: 40px;
-  height: 40px;
-}
-
 .NameF {
   text-align: center;
   width: 300px;
@@ -82,13 +64,6 @@
 
 .PChek {
   color: white;
-}
-
-#RegistroEsContainer {
-  width: 98vw - 10px;
-  padding: 1vw;
-  height: max-content;
-  background-color: rgb(45, 58, 58, 0.8);
 }
 
 #titleSisRContainer {
