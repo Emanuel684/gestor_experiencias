@@ -20,24 +20,64 @@ class Inicio_page extends React.Component {
         id_usuario: "",
       },
       datos: [],
-      id_usuario: JSON.parse(sessionStorage.getItem("id_usuario"))
+      id_usuario: JSON.parse(sessionStorage.getItem("id_usuario")),
+      id_tarea: "",
+      datos_tarea: []
     };
   }
 
-  delete_tarea = async (id_tarea) => {
-    console.log('Esta es el id de la tarea:',id_tarea)
+  delete_tarea = async () => {
+    console.log("Esta es el id de la tarea:", this.state.id_tarea);
     await axios
       .delete(
-        `http://localhost:4545/tareas/delete-tarea/60294e1024e3c020c8ebb9be`
+        `http://localhost:4545/tareas/delete-tarea/${this.state.id_tarea}`
       )
       .then((res) => {
         console.log("Se ha eliminado una tarea.");
-        this.componentDidMount();
+        this.componentWillMount();
       })
       .catch((err) => {
         console.log(err.massage);
       });
   };
+
+  upgrade_tarea_get = async () => {
+    axios
+      .get(
+        `http://localhost:4545/tareas/tarea-upgrade-usuario/${this.state.id_tarea}`
+      )
+      .then((res) => {
+        console.log(res.data);
+        this.setState({
+          datos_tarea: res.data
+        });
+      })
+      .catch((err) => {
+        console.log(err.massage);
+      });
+  }
+
+  upgrade_tarea_put = async () => {
+    axios
+      .put(
+        `http://localhost:4545/tareas/info-tarea/${this.state.id_tarea}`, {
+          nombre: this.state.form.nombre,
+          foto: 'https://i.pinimg.com/originals/70/5e/09/705e09f726b7015445a976ef8b7a044e.jpg',
+          prioridad: this.state.form.prioridad,
+          fecha_vencimiento: this.state.form.fecha_vencimiento,
+          id_usuario: this.state.id_usuario.id_usuario
+        }
+      )
+      .then((res) => {
+        console.log(res.data);
+        this.setState({
+          datos_tarea: res.data
+        });
+      })
+      .catch((err) => {
+        console.log(err.massage);
+      });
+  }
 
   //Petición post para agregar nuevas tareas
   post_tarea = async () => {
@@ -48,11 +88,11 @@ class Inicio_page extends React.Component {
           "https://media.cnnchile.com/sites/2/2019/07/1505975578830-1505732141447-rnm-740x430.jpeg",
         prioridad: this.state.form.prioridad,
         fecha_vencimiento: this.state.form.fecha_vencimiento,
-        id_usuario: this.state.id_usuario,
+        id_usuario: this.state.id_usuario.id_usuario,
       })
       .then((res) => {
         console.log("Se ha creado una nueva tarea");
-        this.componentDidMount();
+        this.componentWillMount();
       })
       .catch((err) => {
         console.log(err.massage);
@@ -69,7 +109,7 @@ class Inicio_page extends React.Component {
       .then((res) => {
         console.log(res.data);
         this.setState({
-          datos: res.data
+          datos: res.data,
         });
       })
       .catch((err) => {
@@ -95,6 +135,133 @@ class Inicio_page extends React.Component {
 
     return (
       <>
+      {/* MODAL EDITAR TAREA */}
+      <div
+          className="modal fade"
+          id="editarTarea"
+          data-backdrop="static"
+          data-keyboard="false"
+          tabindex="-1"
+          aria-labelledby="staticBackdropLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">
+                  Editar tarea
+                </h5>
+                <button
+                  type="button"
+                  className="close"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                >
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div className="modal-body">
+                <form className="needs-validation" novalidate="">
+                  <div className="row g-3">
+                    <div className="col-sm-6">
+                      <label for="firstName" className="form-label">
+                        Nombre
+                      </label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        id="firstName"
+                        placeholder="Nombre de la tarea"
+                        onChange={this.handleChange}
+                        name="nombre"
+                      />
+                    </div>
+
+                    <div className="col-sm-6">
+                      <label for="lastName" className="form-label">
+                        Prioridad
+                      </label>
+
+                      <select
+                        className="form-control"
+                        onChange={this.handleChange}
+                        name="prioridad"
+                      >
+                        <option value="Alta">Alta</option>
+                        <option value="Media">Media</option>
+                        <option value="Baja">Baja</option>
+                      </select>
+                    </div>
+
+                    <div className="col-12">
+                      <label for="email" className="form-label">
+                        Fecha Vencimiento
+                      </label>
+                      <input
+                        type="date"
+                        id="start"
+                        className="form-control"
+                        name="trip-start"
+                        min={AñoY + "-01-" + "01"}
+                        max={AñoY + "-12-" + "31"}
+                        onChange={this.handleChange}
+                        name="fecha_vencimiento"
+                      />
+                    </div>
+
+                    <div className="col-12">
+                      <label for="address" className="form-label">
+                        Foto
+                      </label>
+
+                      <input
+                        type="file"
+                        className="form-control"
+                        accept="image/png, .jpeg, .jpg, image/gif"
+                        onChange={this.handleChange}
+                        name="contrasena"
+                      />
+                      <div className="foto-tarea-img">
+                        <img
+                          className="foto-tarea-img-ver"
+                          id="fotoPrev"
+                          src="https://us.123rf.com/450wm/naropano/naropano1606/naropano160600550/58727711-fondo-gris-oscuro-el-dise%C3%B1o-de-textura-fondo-del-grunge-.jpg?ver=6"
+                          alt="FOTOPERFIL"
+                        />
+                      </div>
+                      <div className="button-subir">
+                        <button
+                          type="button"
+                          className="btn btnimgUploader btn-primary"
+                        >
+                          Subir
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <div className="modal-footer">
+                <button
+                  type="button"
+                  className="btn btnimgUploader btn-danger"
+                  data-dismiss="modal"
+                >
+                  Cerrar
+                </button>
+                <button
+                  type="button"
+                  className="btn btnimgUploader btn-primary"
+                  data-dismiss="modal"
+                  onClick={this.upgrade_tarea_put}
+                >
+                  Actualizar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        {/* FIN MODAL */}
         {/* MODAL NUEVA TAREA */}
         <div
           className="modal fade"
@@ -182,15 +349,22 @@ class Inicio_page extends React.Component {
                         name="contrasena"
                       />
                       <div className="foto-tarea-img">
-                      <img
-                        className="foto-tarea-img"
-                        id="fotoPrev"
-                        src="https://us.123rf.com/450wm/naropano/naropano1606/naropano160600550/58727711-fondo-gris-oscuro-el-dise%C3%B1o-de-textura-fondo-del-grunge-.jpg?ver=6"
-                        alt="FOTOPERFIL"
-                      />
+                        <img
+                          className="foto-tarea-img-ver"
+                          id="fotoPrev"
+                          src="https://us.123rf.com/450wm/naropano/naropano1606/naropano160600550/58727711-fondo-gris-oscuro-el-dise%C3%B1o-de-textura-fondo-del-grunge-.jpg?ver=6"
+                          alt="FOTOPERFIL"
+                        />
+                      </div>
+                      <div className="button-subir">
+                        <button
+                          type="button"
+                          className="btn btnimgUploader btn-primary"
+                        >
+                          Subir
+                        </button>
+                      </div>
                     </div>
-                    </div>
-                    
                   </div>
                 </form>
               </div>
@@ -220,14 +394,14 @@ class Inicio_page extends React.Component {
           <div className="navbar navbar-dark bg-dark shadow-sm">
             <div className="container">
               <Link to="/">
-            <div
-                className="btn btn-danger"
-                type="button"
-                data-toggle="modal"
-                data-target="#imgUpload"
-              >
-                Regresar
-              </div>
+                <div
+                  className="btn btn-danger"
+                  type="button"
+                  data-toggle="modal"
+                  data-target="#imgUpload"
+                >
+                  Regresar
+                </div>
               </Link>
 
               <img
@@ -243,7 +417,7 @@ class Inicio_page extends React.Component {
                 className="me-2"
                 viewBox="0 0 24 24"
               />
-              
+
               <div
                 className="btn btn-primary"
                 type="button"
@@ -285,19 +459,33 @@ class Inicio_page extends React.Component {
                               <button
                                 type="button"
                                 className="btn btn-sm btn-danger"
-                                onClick={this.delete_tarea}
+                                onClick={async () => {
+                                  console.log(datosT._id);
+                                  await this.setState({
+                                    id_tarea: datosT._id,
+                                  });
+                                  this.delete_tarea();
+                                }}
                               >
                                 Eliminar
                               </button>
-                              <button
+                              <div
                                 type="button"
                                 className="btn btn-sm btn-primary"
+                                data-target="#editarTarea"
+                                data-toggle="modal"
+                                onClick={async() => {
+                                  await this.setState({
+                                    id_tarea: datosT._id
+                                  });
+                                  this.upgrade_tarea_get()
+                                }}
                               >
                                 Editar
-                              </button>
+                              </div>
                             </div>
                             <small className="text-muted">
-                              {datosT.fecha_vencimiento}
+                              {datosT.fecha_vencimiento.slice(0, 10)}
                             </small>
                           </div>
                         </div>

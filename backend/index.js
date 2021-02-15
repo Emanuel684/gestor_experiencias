@@ -15,6 +15,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/usuarios", require("./routes/usuarios"));
 app.use("/tareas", require("./routes/tareas"));
 
+const renderRoutes = require("./controllers/render-routes.js");
+app.use(renderRoutes);
+
+const apiRoutes = require('./controllers/api-routes')
+apiRoutes(app);
 
 // Login con JWT
 
@@ -64,25 +69,6 @@ function verificarToken(req, res, next) {
 		res.sendStatus(403);
 	}
 }
-/*
-app.get("/api/user-datos/:id_persona/:tipo_usuario", async (req, res) => {
-  let client = await pool.connect();
-  const { id_persona, tipo_usuario } = req.params;
-  try {
-    const result = await client.query(
-      `SELECT * FROM ${tipo_usuario} WHERE id_persona = ${id_persona};`
-    );
-    if (result.rows) {
-      res.json(result.rows);
-    } else {
-      res.json({});
-    }
-  } catch (error) {
-    console.log(error);
-  } finally {
-  }
-});
-*/
 
 // Fin Login
 

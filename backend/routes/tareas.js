@@ -9,6 +9,14 @@ router.get('/all-tareas', async (req,res) => {
     res.json(tareas);
 });
 
+// Get para mostrar los datos de una tarea
+router.get('/tarea-upgrade-usuario/:id', async (req,res) => {
+    const id_tarea = req.params;
+    console.log('Este es el id de la tarea',id_tarea.id)
+    const tareas = await Tareas.find({ _id: id_tarea.id });
+    res.json(tareas);
+});
+
 // Get para mostrar todas las tareas que existen de un usuario
 router.get('/all-tareas-usuario/:id', async (req,res) => {
     const id_usuario = req.params;
@@ -29,8 +37,9 @@ router.post('/new-tarea', async (req,res) => {
 // Actualizar la informacion de una tarea
 router.put('/info-tarea/:id', async (req,res) => {
     const { nombre, foto, prioridad, fecha_vencimiento, id_usuario } = req.body;
-    const id = req.params.id;
-    Tareas.findOneAndUpdate(id,{
+    const _id = req.params.id;
+    console.log('Id de la tarea:',_id)
+    Tareas.findByIdAndUpdate(_id,{
         $set: req.body
     }, (err, resultado) => {
         if(err){
