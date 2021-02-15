@@ -3,13 +3,12 @@ import axios from "axios";
 import toastr from "toastr";
 
 import "../Styles/Inicio_page.css";
-import '../Styles/toastr.css';
-
+import "../Styles/toastr.css";
 
 import { Link, Redirect } from "react-router-dom";
 
 let aja2 = "";
-console.log('aja2 fuera del componente',aja2);
+console.log("aja2 fuera del componente", aja2);
 
 const Año = new Date();
 const AñoY = Año.getFullYear();
@@ -22,7 +21,7 @@ class Inicio_page extends React.Component {
         prioridad: "",
         fecha_vencimiento: "",
         id_usuario: "",
-        foto: aja2
+        foto: aja2,
       },
       datos_alta: [],
       datos_media: [],
@@ -30,6 +29,7 @@ class Inicio_page extends React.Component {
       id_usuario: JSON.parse(sessionStorage.getItem("id_usuario")),
       id_tarea: "",
       datos_tarea: [],
+      boolLogin: false,
     };
   }
 
@@ -42,7 +42,7 @@ class Inicio_page extends React.Component {
         foto: aja2,
       },
     });
-    console.log('handleChange',this.state.form);
+    console.log("handleChange", this.state.form);
   };
 
   handleSubmit = (e) => {
@@ -55,9 +55,9 @@ class Inicio_page extends React.Component {
       foto: aja2,
     };
     this.setState({
-      form: user
+      form: user,
     });
-    console.log('handleSubmit:',user);
+    console.log("handleSubmit:", user);
   };
 
   // Subir para crear una nueva tarea
@@ -91,7 +91,7 @@ class Inicio_page extends React.Component {
             aja2 = canvas.toDataURL("image/jpeg");
             console.log(canvas.toDataURL("image/jpeg"));
             document.getElementById("tempCanvas").remove();
-            console.log('aja2 en la cosa que tranforma:',aja2)
+            console.log("aja2 en la cosa que tranforma:", aja2);
           }
         };
         document.getElementById("fotoPrev2").src = aja2;
@@ -139,7 +139,7 @@ class Inicio_page extends React.Component {
             aja2 = canvas.toDataURL("image/jpeg");
             console.log(canvas.toDataURL("image/jpeg"));
             document.getElementById("tempCanvas").remove();
-            console.log('aja2 en la cosa que tranforma para actualizar:',aja2)
+            console.log("aja2 en la cosa que tranforma para actualizar:", aja2);
           }
         };
         document.getElementById("fotoPrev1").src = aja2;
@@ -156,25 +156,24 @@ class Inicio_page extends React.Component {
   };
   // Fin subir para actualizar una tarea
 
-
   alertas = async () => {
-    
-    {this.state.datos_alta.map((datosT) => {
-      return (
-        <>
-        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.2/css/toastr.min.css" />
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.2/js/toastr.min.js"></script>
-        <script
-  src="https://code.jquery.com/jquery-3.5.1.min.js"
-  integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
-  crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-         {
-           toastr.error(
-            datosT.nombre,
-            'Esta tarea se vencera pronto.',
-            {
+    {
+      this.state.datos_alta.map((datosT) => {
+        return (
+          <>
+            <link
+              rel="stylesheet"
+              href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.2/css/toastr.min.css"
+            />
+            <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+            <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.2/js/toastr.min.js"></script>
+            <script
+              src="https://code.jquery.com/jquery-3.5.1.min.js"
+              integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
+              crossorigin="anonymous"
+            ></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+            {toastr.error(datosT.nombre, "Esta tarea se vencera pronto.", {
               closeButton: true,
               debug: true,
               newestOnTop: true,
@@ -191,13 +190,11 @@ class Inicio_page extends React.Component {
               showMethod: "fadeIn",
               hideMethod: "fadeOut",
               tapToDismiss: false,
-            }
-          )
-         } 
-        </>
+            })}
+          </>
         );
-                })}
-    
+      });
+    }
   };
 
   delete_tarea = async () => {
@@ -232,7 +229,7 @@ class Inicio_page extends React.Component {
   };
 
   upgrade_tarea_put = async () => {
-    console.log('upgrade aja2:', aja2)
+    console.log("upgrade aja2:", aja2);
     await axios
       .put(`http://localhost:4545/tareas/info-tarea/${this.state.id_tarea}`, {
         nombre: this.state.form.nombre,
@@ -252,9 +249,9 @@ class Inicio_page extends React.Component {
 
   //Petición post para agregar nuevas tareas
   post_tarea = async () => {
-    console.log('foto post', this.state.form.foto)
-    console.log('formulario post:', this.state.form)
-    console.log('aja2 post:', aja2)
+    console.log("foto post", this.state.form.foto);
+    console.log("formulario post:", this.state.form);
+    console.log("aja2 post:", aja2);
     await axios
       .post(`http://localhost:4545/tareas/new-tarea`, {
         nombre: this.state.form.nombre,
@@ -274,23 +271,39 @@ class Inicio_page extends React.Component {
   //Fin post
 
   //Petición get para traer todos los grupos
-  componentWillMount() {
-    axios
-      .get(
-        `http://localhost:4545/tareas/all-tareas-usuario-alta/${this.state.id_usuario.id_usuario}`
-      )
-      .then((res) => {
-        console.log(res.data);
-        this.setState({
-          datos_alta: res.data
+  componentWillMount = async () => {
+    console.log(
+      "sessionStorage de login null:",
+      JSON.parse(sessionStorage.getItem("login"))
+    );
+    console.log(
+      "sessionStorage de login:",
+      JSON.parse(sessionStorage.getItem("login")).login
+    );
+    console.log("if hola", JSON.stringify(sessionStorage.getItem("login")));
+    if (JSON.parse(sessionStorage.getItem("login")).login) {
+      console.log("Se ejecuto el else if");
+      await axios
+        .get(
+          `http://localhost:4545/tareas/all-tareas-usuario-alta/${this.state.id_usuario.id_usuario}`
+        )
+        .then((res) => {
+          console.log(res.data);
+          this.setState({
+            datos_alta: res.data,
+          });
+          this.get_datos_media();
+          this.alertas();
+        })
+        .catch((err) => {
+          console.log(err.massage);
         });
-        this.get_datos_media();
-        this.alertas();
-      })
-      .catch((err) => {
-        console.log(err.massage);
-      });
-  }
+    } else {
+      console.log("Se ejecuto el else");
+
+      this.setState({ boolLogin: true });
+    }
+  };
   // Fin get
 
   get_datos_media = async () => {
@@ -326,16 +339,11 @@ class Inicio_page extends React.Component {
       });
   };
 
-  
-
   render() {
     console.log(this.state.datos);
     const tareasUsuarioAlta = this.state.datos_alta;
     const tareasUsuarioMedia = this.state.datos_media;
     const tareasUsuarioBaja = this.state.datos_baja;
-    console.log('foto render:', this.state.form.foto)
-    console.log('formulario render:', this.state.form)
-    console.log('aja2 render:', aja2)
 
     return (
       <>
@@ -349,10 +357,10 @@ class Inicio_page extends React.Component {
           aria-labelledby="staticBackdropLabel"
           aria-hidden="true"
         >
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="staticBackdropLabel">
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title" id="staticBackdropLabel">
                   Editar tarea
                 </h5>
                 <button
@@ -365,7 +373,11 @@ class Inicio_page extends React.Component {
                 </button>
               </div>
               <div className="modal-body">
-                <form className="needs-validation" novalidate="" onSubmit={this.handleSubmit}>
+                <form
+                  className="needs-validation"
+                  novalidate=""
+                  onSubmit={this.handleSubmit}
+                >
                   <div className="row g-3">
                     <div className="col-sm-6">
                       <label for="firstName" className="form-label">
@@ -434,8 +446,7 @@ class Inicio_page extends React.Component {
                           alt="FOTO"
                         />
                       </div>
-                      <div className="button-subir">
-                      </div>
+                      <div className="button-subir"></div>
                     </div>
                   </div>
                 </form>
@@ -471,10 +482,10 @@ class Inicio_page extends React.Component {
           aria-labelledby="staticBackdropLabel"
           aria-hidden="true"
         >
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="staticBackdropLabel">
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title" id="staticBackdropLabel">
                   Crear nueva tarea
                 </h5>
                 <button
@@ -487,7 +498,11 @@ class Inicio_page extends React.Component {
                 </button>
               </div>
               <div className="modal-body">
-                <form className="needs-validation" novalidate="" onSubmit={this.handleSubmit}>
+                <form
+                  className="needs-validation"
+                  novalidate=""
+                  onSubmit={this.handleSubmit}
+                >
                   <div className="row g-3">
                     <div className="col-sm-6">
                       <label for="firstName" className="form-label">
@@ -556,8 +571,7 @@ class Inicio_page extends React.Component {
                           alt="FOTO"
                         />
                       </div>
-                      <div className="button-subir">
-                      </div>
+                      <div className="button-subir"></div>
                     </div>
                   </div>
                 </form>
@@ -626,14 +640,13 @@ class Inicio_page extends React.Component {
 
         <main>
           <div className="album py-5 bg-light">
-          
             <div className="container">
               <h1>Prioridad Alta</h1>
               <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
                 {tareasUsuarioAlta.map((datosT) => {
                   return (
                     <div className="col">
-                      <div className="card shadow-sm">
+                      <div className="card shadow-sm" key={datosT._id}>
                         <img
                           src={datosT.foto}
                           width="100%"
@@ -649,9 +662,7 @@ class Inicio_page extends React.Component {
                         />
 
                         <div className="card-body">
-                          <p className="card-text">
-                            {datosT.nombre}
-                          </p>
+                          <p className="card-text">{datosT.nombre}</p>
                           <div className="d-flex justify-content-between align-items-center">
                             <div className="btn-group">
                               <button
@@ -685,7 +696,6 @@ class Inicio_page extends React.Component {
                             <small className="text-muted">
                               {datosT.fecha_vencimiento.slice(0, 10)}
                             </small>
-                            
                           </div>
                         </div>
                       </div>
@@ -698,7 +708,7 @@ class Inicio_page extends React.Component {
                 {tareasUsuarioMedia.map((datosT) => {
                   return (
                     <div className="col">
-                      <div className="card shadow-sm">
+                      <div className="card shadow-sm" key={datosT._id}>
                         <img
                           src={datosT.foto}
                           width="100%"
@@ -760,7 +770,7 @@ class Inicio_page extends React.Component {
                 {tareasUsuarioBaja.map((datosT) => {
                   return (
                     <div className="col">
-                      <div className="card shadow-sm">
+                      <div className="card shadow-sm" key={datosT._id}>
                         <img
                           src={datosT.foto}
                           width="100%"
@@ -821,6 +831,13 @@ class Inicio_page extends React.Component {
           </div>
         </main>
         <div className="none" id="body"></div>
+        {this.state.boolLogin && (
+          <Redirect
+            to={{
+              pathname: "/",
+            }}
+          ></Redirect>
+        )}
       </>
     );
   }

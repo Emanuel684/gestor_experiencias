@@ -93,6 +93,18 @@ class Login_usuarios extends React.Component {
     }
   };
 
+  //Petición get para traer todos los grupos
+  componentWillMount = async() => {
+    sessionStorage.setItem(
+      "login",
+      JSON.stringify({
+        login: false
+      })
+    );
+    
+  }
+  // Fin get
+
   handleChange = async (e) => {
     e.persist();
     await this.setState({
