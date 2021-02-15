@@ -1,34 +1,33 @@
 import React from "react";
-import axios from 'axios';
+import axios from "axios";
 
 import "../Styles/Login_page.css";
 
-import { BrowserRouter as Router, Redirect, Link } from "react-router-dom";
+import { Redirect, Link } from "react-router-dom";
 
 class Login_usuarios extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       form: {
-        correo_electronico: '',
-        contrasena: '',
+        correo_electronico: "",
+        contrasena: "",
       },
-      id_usuario: '',
+      id_usuario: "",
       login: false,
       token: null,
       datos: [],
       datos_user: null,
       datos_user2: null,
-      Bool1: false
+      Bool1: false,
     };
   }
-
 
   login = async () => {
     await axios
       .post(`http://localhost:4545/api/login`, {
         correo_electronico: this.state.form.correo_electronico,
-        contrasena: this.state.form.contrasena
+        contrasena: this.state.form.contrasena,
       })
       .then((res) => {
         console.log(res);
@@ -44,7 +43,7 @@ class Login_usuarios extends React.Component {
             "login",
             JSON.stringify({
               login: true,
-              token: res.data.token
+              token: res.data.token,
             })
           );
           this.login2();
@@ -66,12 +65,12 @@ class Login_usuarios extends React.Component {
       })
       .then((res) => {
         this.setState({ datos_user: res.data.data });
-        this.Ingreso();
         console.log(res);
         console.log(res.data);
-        console.log('el resultado:',res.data.data.result[0]);
+        console.log("el resultado:", res.data.data.result[0]);
         this.setState({ id_usuario: res.data.data.result[0]._id });
-        console.log('id del usuario en el estado',this.state.id_usuario);
+        console.log("id del usuario en el estado", this.state.id_usuario);
+        this.Ingreso();
       })
       .catch((err) => {
         console.log(err.massage);
@@ -79,18 +78,20 @@ class Login_usuarios extends React.Component {
   };
 
   Ingreso = async () => {
-        if (this.state.id_usuario) {
-          console.log("Esta es el id_usuario", this.state.id_usuario);
-          sessionStorage.setItem(
-            "id_usuario",
-            JSON.stringify({
-              id_usuario: this.state.id_usuario
-            })
-          );
-          this.setState({ Bool1: true });
-        }
-      }
-
+    if (this.state.id_usuario) {
+      console.log(
+        "Esta es el id_usuario en la funcion de ingreso",
+        this.state.id_usuario
+      );
+      sessionStorage.setItem(
+        "id_usuario",
+        JSON.stringify({
+          id_usuario: this.state.id_usuario,
+        })
+      );
+      this.setState({ Bool1: true });
+    }
+  };
 
   handleChange = async (e) => {
     e.persist();
@@ -108,55 +109,57 @@ class Login_usuarios extends React.Component {
       <>
         <div className="text-center">
           <div className="form-signin">
-            
-              <img
-                className="mb-4"
-                src="https://1.bp.blogspot.com/-9phAiObUAOk/X8BdHu3MhvI/AAAAAAAAIq8/re7gbeTQ214vkvIgjFiys4hNdQIs-eKAACLcBGAsYHQ/s999/login.png"
-                alt=""
-                width="72"
-                height="72"
-              />
-              <h1 className="h3 mb-3 fw-normal">Por favor, ingrese</h1>
-              <label for="inputEmail" className="visually-hidden">
-                Correo electronico
-              </label>
-              <input
-                type="email"
-                id="inputEmail"
-                className="form-control"
-                placeholder="Correo Electronico"
-                onChange={this.handleChange}
-                name="correo_electronico"
-              />
-              <label for="inputPassword" className="visually-hidden">
-                Contraseña
-              </label>
-              <input
-                type="password"
-                id="inputPassword"
-                className="form-control"
-                placeholder="Contraseña"
-                onChange={this.handleChange}
-                name="contrasena"
-              />
-              <div className="checkbox mb-3"></div>
-              <button className="w-100 btn btn-lg btn-primary" onClick={this.login}>
-                Ingresar
-              </button>
-              <hr/>
-              <Link to="/registro">
+            <img
+              className="mb-4"
+              src="https://1.bp.blogspot.com/-9phAiObUAOk/X8BdHu3MhvI/AAAAAAAAIq8/re7gbeTQ214vkvIgjFiys4hNdQIs-eKAACLcBGAsYHQ/s999/login.png"
+              alt=""
+              width="72"
+              height="72"
+            />
+            <h1 className="h3 mb-3 fw-normal">Por favor, ingrese</h1>
+            <label for="inputEmail" className="visually-hidden">
+              Correo electronico
+            </label>
+            <input
+              type="email"
+              id="inputEmail"
+              className="form-control"
+              placeholder="Correo Electronico"
+              onChange={this.handleChange}
+              name="correo_electronico"
+            />
+            <label for="inputPassword" className="visually-hidden">
+              Contraseña
+            </label>
+            <input
+              type="password"
+              id="inputPassword"
+              className="form-control"
+              placeholder="Contraseña"
+              onChange={this.handleChange}
+              name="contrasena"
+            />
+            <div className="checkbox mb-3"></div>
+            <button
+              className="w-100 btn btn-lg btn-primary"
+              onClick={this.login}
+            >
+              Ingresar
+            </button>
+            <hr />
+            <Link to="/registro">
               <button className="w-100 btn btn-lg btn-primary">
                 Registrarse
               </button>
-              </Link>
+            </Link>
             {/* Login */}
             {this.state.Bool1 && (
-                  <Redirect
-                    to={{
-                      pathname: "/login/inicio",
-                    }}
-                  ></Redirect>
-                )}
+              <Redirect
+                to={{
+                  pathname: "/login/inicio",
+                }}
+              ></Redirect>
+            )}
           </div>
         </div>
       </>

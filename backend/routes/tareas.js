@@ -4,6 +4,7 @@ const router = Router();
 
 
 // Get para mostrar todas las tareas que existen
+// Funciona
 router.get('/all-tareas', async (req,res) => {
     const tareas = await Tareas.find().sort('-_id');
     res.json(tareas);
@@ -17,15 +18,35 @@ router.get('/tarea-upgrade-usuario/:id', async (req,res) => {
     res.json(tareas);
 });
 
-// Get para mostrar todas las tareas que existen de un usuario
-router.get('/all-tareas-usuario/:id', async (req,res) => {
+// Get para mostrar todas las tareas que existen de un usuario para prioridad alta
+// Funciona
+router.get('/all-tareas-usuario-alta/:id', async (req,res) => {
     const id_usuario = req.params;
     console.log('Este es el id del usuario',id_usuario.id)
-    const tareas = await Tareas.find({ id_usuario: id_usuario.id });
+    const tareas = await Tareas.find({ id_usuario: id_usuario.id, prioridad: 'Alta' });
+    res.json(tareas);
+});
+
+// Get para mostrar todas las tareas que existen de un usuario para prioridad media
+// Funciona
+router.get('/all-tareas-usuario-media/:id', async (req,res) => {
+    const id_usuario = req.params;
+    console.log('Este es el id del usuario',id_usuario.id)
+    const tareas = await Tareas.find({ id_usuario: id_usuario.id, prioridad: 'Media' });
+    res.json(tareas);
+});
+
+// Get para mostrar todas las tareas que existen de un usuario para prioridad baja
+// Funciona
+router.get('/all-tareas-usuario-baja/:id', async (req,res) => {
+    const id_usuario = req.params;
+    console.log('Este es el id del usuario',id_usuario.id)
+    const tareas = await Tareas.find({ id_usuario: id_usuario.id, prioridad: 'Baja' });
     res.json(tareas);
 });
 
 // Post para crear una nueva tarea
+// Funciona
 router.post('/new-tarea', async (req,res) => {
     const { nombre, foto, prioridad, fecha_vencimiento, id_usuario } = req.body;
     const newTarea = new Tareas({  nombre, foto, prioridad, fecha_vencimiento, id_usuario });
@@ -35,6 +56,7 @@ router.post('/new-tarea', async (req,res) => {
 
 
 // Actualizar la informacion de una tarea
+// Funciona
 router.put('/info-tarea/:id', async (req,res) => {
     const { nombre, foto, prioridad, fecha_vencimiento, id_usuario } = req.body;
     const _id = req.params.id;
@@ -52,6 +74,7 @@ router.put('/info-tarea/:id', async (req,res) => {
 
 
 // Eliminar un tarea
+// Funciona
 router.delete('/delete-tarea/:id', async (req,res) => {
     const id = req.params.id;
     const tareas = await Tareas.findByIdAndDelete(id);
