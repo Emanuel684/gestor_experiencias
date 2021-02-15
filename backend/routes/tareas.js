@@ -49,6 +49,11 @@ router.get('/all-tareas-usuario-baja/:id', async (req,res) => {
 // Funciona
 router.post('/new-tarea', async (req,res) => {
     const { nombre, foto, prioridad, fecha_vencimiento, id_usuario } = req.body;
+    console.log(foto);
+    console.log(nombre);
+    console.log(prioridad);
+    console.log(fecha_vencimiento);
+    console.log(id_usuario)
     const newTarea = new Tareas({  nombre, foto, prioridad, fecha_vencimiento, id_usuario });
     newTarea.save();
     res.json({message: 'Se creo una nueva tarea.'});

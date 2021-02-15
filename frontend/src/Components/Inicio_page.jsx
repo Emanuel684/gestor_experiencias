@@ -8,6 +8,9 @@ import '../Styles/toastr.css';
 
 import { Link, Redirect } from "react-router-dom";
 
+let aja2 = "";
+console.log('aja2 fuera del componente',aja2);
+
 const Año = new Date();
 const AñoY = Año.getFullYear();
 class Inicio_page extends React.Component {
@@ -16,10 +19,10 @@ class Inicio_page extends React.Component {
     this.state = {
       form: {
         nombre: "",
-        foto: "",
         prioridad: "",
         fecha_vencimiento: "",
         id_usuario: "",
+        foto: aja2
       },
       datos_alta: [],
       datos_media: [],
@@ -29,6 +32,130 @@ class Inicio_page extends React.Component {
       datos_tarea: [],
     };
   }
+
+  handleChange = async (e) => {
+    e.persist();
+    await this.setState({
+      form: {
+        ...this.state.form,
+        [e.target.name]: e.target.value,
+        foto: aja2,
+      },
+    });
+    console.log('handleChange',this.state.form);
+  };
+
+  handleSubmit = (e) => {
+    e.preventDefault();
+    const user = {
+      nombre: this.state.form.nombre,
+      prioridad: this.state.form.prioridad,
+      fecha_vencimiento: this.state.form.fecha_vencimiento,
+      id_usuario: this.state.form.id_usuario,
+      foto: aja2,
+    };
+    this.setState({
+      form: user
+    });
+    console.log('handleSubmit:',user);
+  };
+
+  // Subir para crear una nueva tarea
+  Subir = () => {
+    let inpu = document.getElementById("FOTO");
+    if (inpu.files && inpu.files[0]) {
+      var reader = new FileReader();
+      reader.onload = function (e) {
+        console.log(e.target.result);
+        aja2 = e.target.result;
+        document.getElementById("body").innerHTML =
+          "<canvas id='tempCanvas' width='300' height='300' style='display:none'></canvas>";
+        var canvas = document.getElementById("tempCanvas");
+        var ctx = canvas.getContext("2d");
+        var cw = canvas.width;
+        var ch = canvas.height;
+        var maxW = 300;
+        var maxH = 300;
+        var img = new Image();
+        img.src = this.result;
+        img.onload = function () {
+          var iw = img.width;
+          var ih = img.height;
+          if (ih > 300 || iw > 300) {
+            var scale = Math.min(maxW / iw, maxH / ih);
+            var iwScaled = iw * scale;
+            var ihScaled = ih * scale;
+            canvas.width = iwScaled;
+            canvas.height = ihScaled;
+            ctx.drawImage(img, 0, 0, iwScaled, ihScaled);
+            aja2 = canvas.toDataURL("image/jpeg");
+            console.log(canvas.toDataURL("image/jpeg"));
+            document.getElementById("tempCanvas").remove();
+            console.log('aja2 en la cosa que tranforma:',aja2)
+          }
+        };
+        document.getElementById("fotoPrev2").src = aja2;
+      };
+      reader.readAsDataURL(inpu.files[0]);
+    }
+  };
+
+  Subir2 = () => {
+    let inpu = document.getElementById("FOTO");
+    if (inpu.files && inpu.files[0]) {
+      this.state.form.foto = aja2;
+    }
+  };
+  // Fin subir para crear una nueva tarea
+
+  // Subir para actualizar una tarea
+  Subir3 = () => {
+    let inpu = document.getElementById("FOTO1");
+    if (inpu.files && inpu.files[0]) {
+      var reader = new FileReader();
+      reader.onload = function (e) {
+        console.log(e.target.result);
+        aja2 = e.target.result;
+        document.getElementById("body").innerHTML =
+          "<canvas id='tempCanvas' width='300' height='300' style='display:none'></canvas>";
+        var canvas = document.getElementById("tempCanvas");
+        var ctx = canvas.getContext("2d");
+        var cw = canvas.width;
+        var ch = canvas.height;
+        var maxW = 300;
+        var maxH = 300;
+        var img = new Image();
+        img.src = this.result;
+        img.onload = function () {
+          var iw = img.width;
+          var ih = img.height;
+          if (ih > 300 || iw > 300) {
+            var scale = Math.min(maxW / iw, maxH / ih);
+            var iwScaled = iw * scale;
+            var ihScaled = ih * scale;
+            canvas.width = iwScaled;
+            canvas.height = ihScaled;
+            ctx.drawImage(img, 0, 0, iwScaled, ihScaled);
+            aja2 = canvas.toDataURL("image/jpeg");
+            console.log(canvas.toDataURL("image/jpeg"));
+            document.getElementById("tempCanvas").remove();
+            console.log('aja2 en la cosa que tranforma para actualizar:',aja2)
+          }
+        };
+        document.getElementById("fotoPrev1").src = aja2;
+      };
+      reader.readAsDataURL(inpu.files[0]);
+    }
+  };
+
+  Subir4 = () => {
+    let inpu = document.getElementById("FOTO");
+    if (inpu.files && inpu.files[0]) {
+      this.state.form.foto = aja2;
+    }
+  };
+  // Fin subir para actualizar una tarea
+
 
   alertas = async () => {
     
@@ -105,11 +232,11 @@ class Inicio_page extends React.Component {
   };
 
   upgrade_tarea_put = async () => {
-    axios
+    console.log('upgrade aja2:', aja2)
+    await axios
       .put(`http://localhost:4545/tareas/info-tarea/${this.state.id_tarea}`, {
         nombre: this.state.form.nombre,
-        foto:
-          "https://i.pinimg.com/originals/70/5e/09/705e09f726b7015445a976ef8b7a044e.jpg",
+        foto: aja2,
         prioridad: this.state.form.prioridad,
         fecha_vencimiento: this.state.form.fecha_vencimiento,
         id_usuario: this.state.id_usuario.id_usuario,
@@ -125,11 +252,13 @@ class Inicio_page extends React.Component {
 
   //Petición post para agregar nuevas tareas
   post_tarea = async () => {
+    console.log('foto post', this.state.form.foto)
+    console.log('formulario post:', this.state.form)
+    console.log('aja2 post:', aja2)
     await axios
       .post(`http://localhost:4545/tareas/new-tarea`, {
         nombre: this.state.form.nombre,
-        foto:
-          "https://media.cnnchile.com/sites/2/2019/07/1505975578830-1505732141447-rnm-740x430.jpeg",
+        foto: aja2,
         prioridad: this.state.form.prioridad,
         fecha_vencimiento: this.state.form.fecha_vencimiento,
         id_usuario: this.state.id_usuario.id_usuario,
@@ -197,22 +326,16 @@ class Inicio_page extends React.Component {
       });
   };
 
-  handleChange = async (e) => {
-    e.persist();
-    await this.setState({
-      form: {
-        ...this.state.form,
-        [e.target.name]: e.target.value,
-      },
-    });
-    console.log(this.state.form);
-  };
+  
 
   render() {
     console.log(this.state.datos);
     const tareasUsuarioAlta = this.state.datos_alta;
     const tareasUsuarioMedia = this.state.datos_media;
     const tareasUsuarioBaja = this.state.datos_baja;
+    console.log('foto render:', this.state.form.foto)
+    console.log('formulario render:', this.state.form)
+    console.log('aja2 render:', aja2)
 
     return (
       <>
@@ -242,7 +365,7 @@ class Inicio_page extends React.Component {
                 </button>
               </div>
               <div className="modal-body">
-                <form className="needs-validation" novalidate="">
+                <form className="needs-validation" novalidate="" onSubmit={this.handleSubmit}>
                   <div className="row g-3">
                     <div className="col-sm-6">
                       <label for="firstName" className="form-label">
@@ -300,24 +423,18 @@ class Inicio_page extends React.Component {
                         type="file"
                         className="form-control"
                         accept="image/png, .jpeg, .jpg, image/gif"
-                        onChange={this.handleChange}
-                        name="contrasena"
+                        id="FOTO1"
+                        onChange={this.Subir3}
                       />
                       <div className="foto-tarea-img">
                         <img
                           className="foto-tarea-img-ver"
-                          id="fotoPrev"
+                          id="fotoPrev1"
                           src="https://us.123rf.com/450wm/naropano/naropano1606/naropano160600550/58727711-fondo-gris-oscuro-el-dise%C3%B1o-de-textura-fondo-del-grunge-.jpg?ver=6"
-                          alt="FOTOPERFIL"
+                          alt="FOTO"
                         />
                       </div>
                       <div className="button-subir">
-                        <button
-                          type="button"
-                          className="btn btnimgUploader btn-primary"
-                        >
-                          Subir
-                        </button>
                       </div>
                     </div>
                   </div>
@@ -332,7 +449,7 @@ class Inicio_page extends React.Component {
                   Cerrar
                 </button>
                 <button
-                  type="button"
+                  type="submit"
                   className="btn btnimgUploader btn-primary"
                   data-dismiss="modal"
                   onClick={this.upgrade_tarea_put}
@@ -370,7 +487,7 @@ class Inicio_page extends React.Component {
                 </button>
               </div>
               <div className="modal-body">
-                <form className="needs-validation" novalidate="">
+                <form className="needs-validation" novalidate="" onSubmit={this.handleSubmit}>
                   <div className="row g-3">
                     <div className="col-sm-6">
                       <label for="firstName" className="form-label">
@@ -428,24 +545,18 @@ class Inicio_page extends React.Component {
                         type="file"
                         className="form-control"
                         accept="image/png, .jpeg, .jpg, image/gif"
-                        onChange={this.handleChange}
-                        name="contrasena"
+                        id="FOTO"
+                        onChange={this.Subir}
                       />
                       <div className="foto-tarea-img">
                         <img
                           className="foto-tarea-img-ver"
-                          id="fotoPrev"
+                          id="fotoPrev2"
                           src="https://us.123rf.com/450wm/naropano/naropano1606/naropano160600550/58727711-fondo-gris-oscuro-el-dise%C3%B1o-de-textura-fondo-del-grunge-.jpg?ver=6"
-                          alt="FOTOPERFIL"
+                          alt="FOTO"
                         />
                       </div>
                       <div className="button-subir">
-                        <button
-                          type="button"
-                          className="btn btnimgUploader btn-primary"
-                        >
-                          Subir
-                        </button>
                       </div>
                     </div>
                   </div>
@@ -460,7 +571,7 @@ class Inicio_page extends React.Component {
                   Cerrar
                 </button>
                 <button
-                  type="button"
+                  type="submit"
                   className="btn btnimgUploader btn-primary"
                   data-dismiss="modal"
                   onClick={this.post_tarea}
@@ -709,6 +820,7 @@ class Inicio_page extends React.Component {
             </div>
           </div>
         </main>
+        <div className="none" id="body"></div>
       </>
     );
   }

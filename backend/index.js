@@ -2,6 +2,7 @@ const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
 const jwt = require('jsonwebtoken');
+const bodyParser = require('body-parser');
 const app = express();
 
 require('./db');
@@ -11,15 +12,15 @@ app.use(cors({ origin: "*" }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// BODY-PARSE
+app.use(bodyParser.json({limit: '100mb'}));
+app.use(bodyParser.urlencoded({limit: '100mb', extended: true}));
+
+
 // routes
 app.use("/usuarios", require("./routes/usuarios"));
 app.use("/tareas", require("./routes/tareas"));
 
-const renderRoutes = require("./controllers/render-routes.js");
-app.use(renderRoutes);
-
-const apiRoutes = require('./controllers/api-routes')
-apiRoutes(app);
 
 // Login con JWT
 
