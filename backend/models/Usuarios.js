@@ -1,4 +1,5 @@
 const { Schema, model } = require("mongoose");
+const bcrypt = require('bcrypt');
 
 // Esta es la estructura que van a tener los datos de los usuarios
 const UsuariosSchema = new Schema({
@@ -19,5 +20,14 @@ const UsuariosSchema = new Schema({
     required: true,
   },
 });
+
+UsuariosSchema.pre('save', function(next){ 
+  bcrypt.genSalt(10).then(salts => {
+        bcrypt.hash(this.contrasena, salts).then(hash => {
+          this.contrasena = hash;
+          next();
+        }).catch(error => next(error))
+  }).catch(error => next(error));
+})
 
 module.exports = model("Usuarios", UsuariosSchema);
