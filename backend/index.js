@@ -9,6 +9,8 @@ const app = express();
 
 require("./db");
 
+const nodemailer = require("./routes/router");
+
 app.use(morgan("dev"));
 app.use(cors({ origin: "*" }));
 app.use(express.json());
@@ -19,6 +21,7 @@ app.use(bodyParser.json({ limit: "100mb" }));
 app.use(bodyParser.urlencoded({ limit: "100mb", extended: true }));
 
 // routes
+app.use("/nodemailer", nodemailer);
 app.use("/usuarios", require("./routes/usuarios"));
 app.use("/tareas", require("./routes/tareas"));
 

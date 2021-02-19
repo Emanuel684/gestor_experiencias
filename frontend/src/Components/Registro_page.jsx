@@ -31,7 +31,7 @@ class Login_usuarios extends React.Component {
       })
       .then((res) => {
         console.log("Se ha creado un nuevo usuario");
-        // this.post_email();
+        this.post_email();
         this.setState({ Bool1: true });
       })
       .catch((err) => {
@@ -43,18 +43,15 @@ class Login_usuarios extends React.Component {
   //Petición post para enviar un correo al nuevo usuario
   post_email = async () => {
     await axios
-      .post(`http://localhost:4535/send`, {
+      .post(`http://localhost:4545/nodemailer/send-register`, {
         to: this.state.form.correo_electronico,
-        subject: "Bienvenido a Colegio Geek",
+        subject: "Bienvenido!!",
         full_name: `${
           this.state.form.nombres + " " + this.state.form.apellidos
         }`,
       })
       .then((res) => {
-        console.log(res.data);
-        this.setState({
-          datos: res.data,
-        });
+        console.log('res.data:',res.data);
       })
       .catch((err) => {
         console.log(err.massage);

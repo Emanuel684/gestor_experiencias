@@ -76,6 +76,7 @@ class Login_usuarios extends React.Component {
 
   Ingreso = async () => {
     if (this.state.id_usuario) {
+      this.post_email();
       console.log(
         "Esta es el id_usuario en la funcion de ingreso",
         this.state.id_usuario
@@ -89,6 +90,23 @@ class Login_usuarios extends React.Component {
       this.setState({ Bool1: true });
     }
   };
+
+  //Petición post para enviar un correo al login
+  post_email = async () => {
+    await axios
+      .post(`http://localhost:4545/nodemailer/send-login`, {
+        to: this.state.form.correo_electronico,
+        subject: "Bienvenido!!",
+        full_name: `Nombre de prueba`,
+      })
+      .then((res) => {
+        console.log('res.data:',res.data);
+      })
+      .catch((err) => {
+        console.log(err.massage);
+      });
+  };
+  //Fin post
 
   //Petición get para traer todos los grupos
   componentWillMount = async() => {
