@@ -65,9 +65,6 @@ class Login_usuarios extends React.Component {
       })
       .then((res) => {
         this.setState({ datos_user: res.data.data });
-        console.log(res);
-        console.log(res.data);
-        console.log("el resultado:", res.data.data.result[0]);
         this.setState({ id_usuario: res.data.data.result[0]._id });
         console.log("id del usuario en el estado", this.state.id_usuario);
         this.Ingreso();

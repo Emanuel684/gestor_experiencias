@@ -7,21 +7,19 @@ import "../Styles/toastr.css";
 
 import { Link, Redirect } from "react-router-dom";
 
-let aja2 = "";
-console.log("aja2 fuera del componente", aja2);
-
 const Año = new Date();
 const AñoY = Año.getFullYear();
 class Inicio_page extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      File: null,
+      foto: "",
       form: {
         nombre: "",
         prioridad: "",
         fecha_vencimiento: "",
         id_usuario: "",
-        foto: aja2,
       },
       datos_alta: [],
       datos_media: [],
@@ -39,7 +37,6 @@ class Inicio_page extends React.Component {
       form: {
         ...this.state.form,
         [e.target.name]: e.target.value,
-        foto: aja2,
       },
     });
     console.log("handleChange", this.state.form);
@@ -52,109 +49,9 @@ class Inicio_page extends React.Component {
       prioridad: this.state.form.prioridad,
       fecha_vencimiento: this.state.form.fecha_vencimiento,
       id_usuario: this.state.form.id_usuario,
-      foto: aja2,
     };
-    this.setState({
-      form: user,
-    });
     console.log("handleSubmit:", user);
   };
-
-  // Subir para crear una nueva tarea
-  Subir = () => {
-    let inpu = document.getElementById("FOTO");
-    if (inpu.files && inpu.files[0]) {
-      var reader = new FileReader();
-      reader.onload = function (e) {
-        console.log(e.target.result);
-        aja2 = e.target.result;
-        document.getElementById("body").innerHTML =
-          "<canvas id='tempCanvas' width='300' height='300' style='display:none'></canvas>";
-        var canvas = document.getElementById("tempCanvas");
-        var ctx = canvas.getContext("2d");
-        var cw = canvas.width;
-        var ch = canvas.height;
-        var maxW = 300;
-        var maxH = 300;
-        var img = new Image();
-        img.src = this.result;
-        img.onload = function () {
-          var iw = img.width;
-          var ih = img.height;
-          if (ih > 300 || iw > 300) {
-            var scale = Math.min(maxW / iw, maxH / ih);
-            var iwScaled = iw * scale;
-            var ihScaled = ih * scale;
-            canvas.width = iwScaled;
-            canvas.height = ihScaled;
-            ctx.drawImage(img, 0, 0, iwScaled, ihScaled);
-            aja2 = canvas.toDataURL("image/jpeg");
-            console.log(canvas.toDataURL("image/jpeg"));
-            document.getElementById("tempCanvas").remove();
-            console.log("aja2 en la cosa que tranforma:", aja2);
-          }
-        };
-        document.getElementById("fotoPrev2").src = aja2;
-      };
-      reader.readAsDataURL(inpu.files[0]);
-    }
-  };
-
-  Subir2 = () => {
-    let inpu = document.getElementById("FOTO");
-    if (inpu.files && inpu.files[0]) {
-      this.state.form.foto = aja2;
-    }
-  };
-  // Fin subir para crear una nueva tarea
-
-  // Subir para actualizar una tarea
-  Subir3 = () => {
-    let inpu = document.getElementById("FOTO1");
-    if (inpu.files && inpu.files[0]) {
-      var reader = new FileReader();
-      reader.onload = function (e) {
-        console.log(e.target.result);
-        aja2 = e.target.result;
-        document.getElementById("body").innerHTML =
-          "<canvas id='tempCanvas' width='300' height='300' style='display:none'></canvas>";
-        var canvas = document.getElementById("tempCanvas");
-        var ctx = canvas.getContext("2d");
-        var cw = canvas.width;
-        var ch = canvas.height;
-        var maxW = 300;
-        var maxH = 300;
-        var img = new Image();
-        img.src = this.result;
-        img.onload = function () {
-          var iw = img.width;
-          var ih = img.height;
-          if (ih > 300 || iw > 300) {
-            var scale = Math.min(maxW / iw, maxH / ih);
-            var iwScaled = iw * scale;
-            var ihScaled = ih * scale;
-            canvas.width = iwScaled;
-            canvas.height = ihScaled;
-            ctx.drawImage(img, 0, 0, iwScaled, ihScaled);
-            aja2 = canvas.toDataURL("image/jpeg");
-            console.log(canvas.toDataURL("image/jpeg"));
-            document.getElementById("tempCanvas").remove();
-            console.log("aja2 en la cosa que tranforma para actualizar:", aja2);
-          }
-        };
-        document.getElementById("fotoPrev1").src = aja2;
-      };
-      reader.readAsDataURL(inpu.files[0]);
-    }
-  };
-
-  Subir4 = () => {
-    let inpu = document.getElementById("FOTO");
-    if (inpu.files && inpu.files[0]) {
-      this.state.form.foto = aja2;
-    }
-  };
-  // Fin subir para actualizar una tarea
 
   alertas = async () => {
     {
@@ -218,9 +115,17 @@ class Inicio_page extends React.Component {
         `http://localhost:4545/tareas/tarea-upgrade-usuario/${this.state.id_tarea}`
       )
       .then((res) => {
-        console.log(res.data);
+        console.log("datos get:", res.data);
         this.setState({
-          datos_tarea: res.data,
+          form: {
+            nombre: res.data[0].nombre,
+            prioridad: res.data[0].prioridad,
+            fecha_vencimiento: res.data[0].fecha_vencimiento,
+            id_usuario: res.data[0].id_usuario,
+          },
+        });
+        this.setState({
+          foto: res.data[0].foto,
         });
       })
       .catch((err) => {
@@ -229,11 +134,11 @@ class Inicio_page extends React.Component {
   };
 
   upgrade_tarea_put = async () => {
-    console.log("upgrade aja2:", aja2);
+    console.log("upgrade foto:", this.state.foto);
     await axios
       .put(`http://localhost:4545/tareas/info-tarea/${this.state.id_tarea}`, {
         nombre: this.state.form.nombre,
-        foto: aja2,
+        foto: this.state.foto,
         prioridad: this.state.form.prioridad,
         fecha_vencimiento: this.state.form.fecha_vencimiento,
         id_usuario: this.state.id_usuario.id_usuario,
@@ -251,11 +156,11 @@ class Inicio_page extends React.Component {
   post_tarea = async () => {
     console.log("foto post", this.state.form.foto);
     console.log("formulario post:", this.state.form);
-    console.log("aja2 post:", aja2);
+    console.log("foto", this.state.foto);
     await axios
       .post(`http://localhost:4545/tareas/new-tarea`, {
         nombre: this.state.form.nombre,
-        foto: aja2,
+        foto: this.state.foto,
         prioridad: this.state.form.prioridad,
         fecha_vencimiento: this.state.form.fecha_vencimiento,
         id_usuario: this.state.id_usuario.id_usuario,
@@ -339,6 +244,32 @@ class Inicio_page extends React.Component {
       });
   };
 
+  onChangeHandler = (event) => {
+    console.log(event.target.files[0]);
+    this.setState({
+      File: event.target.files[0],
+      loaded: 0,
+    });
+  };
+
+  onClickHandler = async () => {
+    const data = new FormData();
+    data.append("file", this.state.File);
+    await axios
+      .post(`http://localhost:4545/imageupload`, data)
+      .then((res) => {
+        console.log("Se ha subido una imagen");
+        console.log(res);
+        document.getElementById("fotoPrev2").src = res.data;
+        this.setState({
+          foto: res.data,
+        });
+      })
+      .catch((err) => {
+        console.log(err.massage);
+      });
+  };
+
   render() {
     console.log(this.state.datos);
     const tareasUsuarioAlta = this.state.datos_alta;
@@ -387,7 +318,7 @@ class Inicio_page extends React.Component {
                         type="text"
                         className="form-control"
                         id="firstName"
-                        placeholder="Nombre de la tarea"
+                        placeholder={this.state.form.nombre}
                         onChange={this.handleChange}
                         name="nombre"
                       />
@@ -403,7 +334,7 @@ class Inicio_page extends React.Component {
                         onChange={this.handleChange}
                         name="prioridad"
                       >
-                        <option value="">Seleccionar</option>
+                        <option value="">{this.state.form.prioridad}</option>
                         <option value="Alta">Alta</option>
                         <option value="Media">Media</option>
                         <option value="Baja">Baja</option>
@@ -418,7 +349,7 @@ class Inicio_page extends React.Component {
                         type="date"
                         id="start"
                         className="form-control"
-                        name="trip-start"
+                        value={this.state.form.fecha_vencimiento.slice(0, 10)}
                         min={AñoY + "-01-" + "01"}
                         max={AñoY + "-12-" + "31"}
                         onChange={this.handleChange}
@@ -436,17 +367,26 @@ class Inicio_page extends React.Component {
                         className="form-control"
                         accept="image/png, .jpeg, .jpg, image/gif"
                         id="FOTO1"
-                        onChange={this.Subir3}
+                        name="file"
+                        onChange={this.onChangeHandler}
                       />
                       <div className="foto-tarea-img">
                         <img
                           className="foto-tarea-img-ver"
                           id="fotoPrev1"
-                          src="https://us.123rf.com/450wm/naropano/naropano1606/naropano160600550/58727711-fondo-gris-oscuro-el-dise%C3%B1o-de-textura-fondo-del-grunge-.jpg?ver=6"
+                          src={this.state.foto}
                           alt="FOTO"
                         />
                       </div>
-                      <div className="button-subir"></div>
+                      <div className="foto-tarea-img">
+                        <button
+                          type="button"
+                          className="btn btnimgUploader btn-primary"
+                          onClick={this.onClickHandler}
+                        >
+                          Subir
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </form>
@@ -561,7 +501,8 @@ class Inicio_page extends React.Component {
                         className="form-control"
                         accept="image/png, .jpeg, .jpg, image/gif"
                         id="FOTO"
-                        onChange={this.Subir}
+                        name="file"
+                        onChange={this.onChangeHandler}
                       />
                       <div className="foto-tarea-img">
                         <img
@@ -571,7 +512,15 @@ class Inicio_page extends React.Component {
                           alt="FOTO"
                         />
                       </div>
-                      <div className="button-subir"></div>
+                      <div className="foto-tarea-img">
+                        <button
+                          type="button"
+                          className="btn btnimgUploader btn-primary"
+                          onClick={this.onClickHandler}
+                        >
+                          Subir
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </form>

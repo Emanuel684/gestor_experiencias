@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "pruebatecnica-gestor-tareas",
+  "private_key_id": "959eb9bbc6c372f225e87913b3b34b0d0be6295b",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCWMkpU4E2NVYW2\nTUzT6QPDqiOcZ9Esb4KBsqJeZFvzv7h1i3JL8eg1G3dBitPn8AIlGYsAkp0h1Gn6\n9r/aiHNjYdIIvzvXsCXe6jAcCFIYsdkcjpLYFvpC5kKEcLsBwqXt7nAjUiRSfjuv\n+63m4zlHIWkIvufjGsLv+p4Y/EI0XIG4OnTIVOXuPOgF7aOiUQBW9TrfohFUyEL6\nT6WICc3/1ioQqha/sEkXltjWIBeKhVZe8lXPewnzxGeoFk9M77Fl6BoupVUB2hbV\nPYHuhRwWeVTjwCqtt+Vz/dQU4Pf+3pcM+PAZXCddMjXdvKdNUbHRRhlcoQ9xgyJn\nRr4+5ngVAgMBAAECggEACCk5Yr1BWYGhH1O57fXGT5ZqEvCNLBXvCG8VZX2chXUQ\nZ8qo7jl5vZD9fOE3PG4NH8jwhZpx0UnCbHGF4TDy3B6PlAwYC1M165PcA1nsZA0d\n1/BjSDyPYp0yVhHuB111OKVxEGpBMP5M7fYF7/q+vP+yvlfpL6zflLyQZJkoW8Hp\ntoqMve5AFoMXtNHCBbAUYfvbIpcBs7gtsQY1kTg5EudDEthqt+/IJupqfPcsWu44\ntb6PYVC4TNtM2T3eB4P/22PnbY9Qx9ViAt3LwgurOCTuEP8miqjiuZgCCBrMes9y\nry6S/SY5Phvd/zl5yK8YPSqZYuyUtL5VRLIVbEy1DQKBgQDHXtyy0vHP6tuEtSLZ\nPa437ue+iPTIBYSpElskCKckcF6vTKFyXi4xRU34KWAkZEDkLSyksCwFTRwl8Opk\nFnRPZhGTK3y5P5ZLbJXA+irX3IGDszk6Q7exFWWi+0rFnWkRjApjOynCC3KcThoE\nDuPFJlaAL/tEnFyhL7CBtQvFPwKBgQDA28Fy2FgV4vHxYFvgNzGx5n1o5XCphJ1v\nHfOZw/vES1zhxrr14O7bKwckJupFGLXqCZD81NLR7VqQnJe79CAgsf+W8EUfz1ZI\nDEplTmZlmMe1KGNQnc1+mOqaxSDUl6tU3FtzgrzT3LQpZ/1vHLjEdmVi3CId15eD\nzZiHRsWJqwKBgAJ9CqAoxd/kfIzxfdfcTzpffwD/0J5Wg0tg8UZH3V41ENl7SWCW\nEFmJFeoNCigqIC046x+7GzGNvtYyZZqONTFwgrOljU76njOezVe1R6eeFve/2u0B\nP1+0dqpMHKjOyCrx5odKi8DiR7Hvv59hWDJzwgyjjK1UjktsvvU/f0AdAoGASkES\nRXaYy6x6fPYdycFWh+l3pbiZXRtrRkog7bYwrI5br65Fc7/sF0SE1l2JW5s9B2Qx\nh7cliKA7e2xfW4WODSibgPD3nFzHGqxoxIKgGEPvuIdZXcO0SCb2RSrbDh9rXxwM\ntffDXksersaUJIDJfxMazCp3lEfa1WuGa6dLDUsCgYEAvgBORAQTJrpY5ZCDqHcl\nH+yJCXF3UzQYj0VL+lFQ4QpFTVK7IOp/4twenvu/BE1esooarh4oC4j2qKietCB/\nPjdIpBunc1knT/AE7420mZfz+/yFYhq4hVGtCBydsJumn11qzOzBialI0uNnVSKc\nzO2l4xi5t+vH4DHq8chlU1s=\n-----END PRIVATE KEY-----\n",
+  "client_email": "bucket-gestor-tareas@pruebatecnica-gestor-tareas.iam.gserviceaccount.com",
+  "client_id": "100671847788788833239",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/bucket-gestor-tareas%40pruebatecnica-gestor-tareas.iam.gserviceaccount.com"
+}

@@ -2,6 +2,8 @@ const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
+const multer = require('multer');
+const path = require('path');
 const bodyParser = require("body-parser");
 const app = express();
 
@@ -20,19 +22,28 @@ app.use(bodyParser.urlencoded({ limit: "100mb", extended: true }));
 app.use("/usuarios", require("./routes/usuarios"));
 app.use("/tareas", require("./routes/tareas"));
 
+/*
+// Configuracion de multer
+const multerMid = multer({
+  storage: multer.memoryStorage(),
+  limits: {
+      fileSize: 5 * 1024 * 1024,
+  },
+})
+// Fin configuracion de multer
+app.use(multerMid.single('file'));
+*/
+app.use(require('./routes/uploadImg.routes'))
+
 // Login con JWT
 
 app.post("/api/login", async (req, res) => {
   const Usuarios = require("./models/Usuarios");
   const { correo_electronico, contrasena } = req.body;
-  console.log("Correo electronico:", correo_electronico);
-  console.log("Contrasena:", contrasena);
   try {
     const result = await Usuarios.find({
       correo_electronico: correo_electronico,
     });
-    console.log(result);
-    console.log(result[0]);
     if (result) {
       console.log(result[0]);
       const token = jwt.sign({ result }, "geek");

@@ -15,3 +15,8 @@
     height: 200px;
 }
 
+.btnimgUploader{
+    font-weight: bold;
+    padding-left: 3%;
+    padding-right: 3%;
+}

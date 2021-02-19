@@ -23,7 +23,7 @@
     "mongoose": "^5.11.15",
     "morgan": "^1.10.0",
     "multer": "^1.4.2",
-    "uuid": "^8.3.2"
+    "uuid": "^3.4.0"
   },
   "devDependencies": {
     "jest": "^26.6.3",
