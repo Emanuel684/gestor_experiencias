@@ -3,14 +3,14 @@ const Usuarios = require("../models/Usuarios");
 const router = Router();
 
 // Get para mostrar todos los usuarios registrados
-// Funciona
+// Funciona Jest
 router.get("/all-usuarios", async (req, res) => {
   const usuarios = await Usuarios.find().sort("-_id");
   res.json(usuarios);
 });
 
 // Post para crear un nuevo usuario
-// Funciona
+// Funciona Jest
 router.post("/new-usuario", async (req, res) => {
   const { nombres, apellidos, correo_electronico, contrasena } = req.body;
   const newUsuarios = new Usuarios({
@@ -24,7 +24,7 @@ router.post("/new-usuario", async (req, res) => {
 });
 
 // Actualizar la informacion de un usuario
-// Funciona
+// Funciona Jest
 router.put("/info-usuario/:id", async (req, res) => {
   const { nombres, apellidos, correo_electronico, contrasena } = req.body;
   const id = req.params.id;
@@ -43,7 +43,7 @@ router.put("/info-usuario/:id", async (req, res) => {
 });
 
 // Eliminar un usuario
-// Funciona
+// Funciona Jest
 router.delete("/delete-usuario/:id", async (req, res) => {
   const id = req.params.id;
   const usuarios = await Usuarios.findByIdAndDelete(id);

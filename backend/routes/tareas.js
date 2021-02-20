@@ -3,14 +3,14 @@ const Tareas = require("../models/Tareas");
 const router = Router();
 
 // Get para mostrar todas las tareas que existen
-// Funciona
+// Funciona Jest
 router.get("/all-tareas", async (req, res) => {
   const tareas = await Tareas.find().sort("-_id");
   res.json(tareas);
 });
 
 // Get para mostrar los datos de una tarea
-// Funciona
+// Funciona Jest
 router.get("/tarea-upgrade-usuario/:id", async (req, res) => {
   const id_tarea = req.params;
   console.log("Este es el id de la tarea", id_tarea.id);
@@ -19,7 +19,7 @@ router.get("/tarea-upgrade-usuario/:id", async (req, res) => {
 });
 
 // Get para mostrar todas las tareas que existen de un usuario para prioridad alta
-// Funciona
+// Funciona Jest
 router.get("/all-tareas-usuario-alta/:id", async (req, res) => {
   const id_usuario = req.params;
   console.log("Este es el id del usuario", id_usuario.id);
@@ -31,7 +31,7 @@ router.get("/all-tareas-usuario-alta/:id", async (req, res) => {
 });
 
 // Get para mostrar todas las tareas que existen de un usuario para prioridad media
-// Funciona
+// Funciona Jest
 router.get("/all-tareas-usuario-media/:id", async (req, res) => {
   const id_usuario = req.params;
   console.log("Este es el id del usuario", id_usuario.id);
@@ -43,7 +43,7 @@ router.get("/all-tareas-usuario-media/:id", async (req, res) => {
 });
 
 // Get para mostrar todas las tareas que existen de un usuario para prioridad baja
-// Funciona
+// Funciona Jest
 router.get("/all-tareas-usuario-baja/:id", async (req, res) => {
   const id_usuario = req.params;
   console.log("Este es el id del usuario", id_usuario.id);
@@ -55,14 +55,9 @@ router.get("/all-tareas-usuario-baja/:id", async (req, res) => {
 });
 
 // Post para crear una nueva tarea
-// Funciona
+// Funciona Jest
 router.post("/new-tarea", async (req, res) => {
   const { nombre, foto, prioridad, fecha_vencimiento, id_usuario } = req.body;
-  console.log(foto);
-  console.log(nombre);
-  console.log(prioridad);
-  console.log(fecha_vencimiento);
-  console.log(id_usuario);
   const newTarea = new Tareas({
     nombre,
     foto,
@@ -94,7 +89,7 @@ router.put("/info-tarea/:id", async (req, res) => {
   );
 });
 
-// Eliminar un tarea
+// Eliminar una tarea
 // Funciona
 router.delete("/delete-tarea/:id", async (req, res) => {
   const id = req.params.id;
