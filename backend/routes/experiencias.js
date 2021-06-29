@@ -25,8 +25,13 @@ router.get("/:id", async (req, res) => {
 // Esta en la lista
 router.get("/:sala_interactiva", async (req, res) => {
   const sala_interactiva = req.params;
-  console.log("Este es el nombre de la sala interactiva", sala_interactiva.sala_interactiva);
-  const experiencias = await Experiencias.find({ sala_interactiva: sala_interactiva.sala_interactiva });
+  console.log(
+    "Este es el nombre de la sala interactiva",
+    sala_interactiva.sala_interactiva
+  );
+  const experiencias = await Experiencias.find({
+    sala_interactiva: sala_interactiva.sala_interactiva,
+  });
   res.json(experiencias);
 });
 
@@ -36,17 +41,23 @@ router.get("/all-experiencias-usuario/:id", async (req, res) => {
   const id_usuario = req.params;
   console.log("Este es el id del usuario", id_usuario.id);
   const experiencias = await Experiencias.find({
-    id_usuario: id_usuario.id
+    id_usuario: id_usuario.id,
   });
   res.json(experiencias);
 });
-
 
 // Post para crear una nueva experiencia
 // Funciona Jest
 // Esta en la lista
 router.post("/", async (req, res) => {
-  const { titulo, descripcion, sala_interactiva, imagen_relacionada, imagen, id_usuario } = req.body;
+  const {
+    titulo,
+    descripcion,
+    sala_interactiva,
+    imagen_relacionada,
+    imagen,
+    id_usuario,
+  } = req.body;
   const newExperiencia = new Experiencias({
     titulo,
     descripcion,
@@ -63,7 +74,14 @@ router.post("/", async (req, res) => {
 // Funciona
 // Esta en la lista
 router.put("/:id", async (req, res) => {
-  const { titulo, descripcion, sala_interactiva, imagen_relacionada, imagen, id_usuario } = req.body;
+  const {
+    titulo,
+    descripcion,
+    sala_interactiva,
+    imagen_relacionada,
+    imagen,
+    id_usuario,
+  } = req.body;
   const _id = req.params.id;
   console.log("Id de la experiencia:", _id);
   Experiencias.findByIdAndUpdate(

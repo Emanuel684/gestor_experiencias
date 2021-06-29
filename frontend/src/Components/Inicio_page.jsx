@@ -5,7 +5,6 @@ import "../Styles/Inicio_page.css";
 
 import { Link, Redirect } from "react-router-dom";
 
-
 class Inicio_page extends React.Component {
   constructor(props) {
     super(props);
@@ -52,13 +51,10 @@ class Inicio_page extends React.Component {
     console.log("handleSubmit:", experiencia);
   };
 
-
   delete_experiencia = async () => {
     console.log("Esta es el id de la experiencia:", this.state.id_experiencia);
     await axios
-      .delete(
-        `http://localhost:4040/${this.state.id_experiencia}`
-      )
+      .delete(`http://localhost:4040/${this.state.id_experiencia}`)
       .then((res) => {
         console.log("Se ha eliminado una experiencia.");
         this.componentWillMount();
@@ -70,9 +66,7 @@ class Inicio_page extends React.Component {
 
   upgrade_experiencia_get = async () => {
     axios
-      .get(
-        `http://localhost:4040/${this.state.id_experiencia}`
-      )
+      .get(`http://localhost:4040/${this.state.id_experiencia}`)
       .then((res) => {
         console.log("datos get:", res.data);
         this.setState({
@@ -101,8 +95,8 @@ class Inicio_page extends React.Component {
         titulo: this.state.form.titulo,
         descripcion: this.state.form.descripcion,
         sala_interactiva: this.state.form.sala_interactiva,
-        imagen_relacionada: /*this.state.form.imagen_relacionada*/ "https://www.mdirector.com/wp-content/uploads/2017/09/experiencia-usuario-ok.jpg",
-        imagen: /*this.state.imagen*/ "https://www.mdirector.com/wp-content/uploads/2017/09/experiencia-usuario-ok.jpg",
+        imagen_relacionada:/*this.state.form.imagen_relacionada*/ "https://i0.wp.com/evemuseografia.com/wp-content/uploads/2020/12/EVE09122020.jpg?fit=1170%2C696&ssl=1",
+        imagen:this.state.imagen,
         id_usuario: this.state.id_usuario.id_usuario,
       })
       .then((res) => {
@@ -124,8 +118,8 @@ class Inicio_page extends React.Component {
         titulo: this.state.form.titulo,
         descripcion: this.state.form.descripcion,
         sala_interactiva: this.state.form.sala_interactiva,
-        imagen_relacionada: /*this.state.form.imagen_relacionada*/ "https://i0.wp.com/evemuseografia.com/wp-content/uploads/2020/12/EVE09122020.jpg?fit=1170%2C696&ssl=1" ,
-        imagen: /*this.state.imagen*/ "https://i0.wp.com/evemuseografia.com/wp-content/uploads/2020/12/EVE09122020.jpg?fit=1170%2C696&ssl=1",
+        imagen_relacionada: /*this.state.form.imagen_relacionada*/ "https://i0.wp.com/evemuseografia.com/wp-content/uploads/2020/12/EVE09122020.jpg?fit=1170%2C696&ssl=1",
+        imagen:this.state.imagen,
         id_usuario: this.state.id_usuario.id_usuario,
       })
       .then((res) => {
@@ -172,7 +166,6 @@ class Inicio_page extends React.Component {
   };
   // Fin get
 
-
   onChangeHandler = (event) => {
     console.log(event.target.files[0]);
     this.setState({
@@ -185,13 +178,14 @@ class Inicio_page extends React.Component {
     const data = new FormData();
     data.append("file", this.state.File);
     await axios
-      .post(`http://localhost:4040/imageupload`, data)
+      .post(`http://localhost:4040/api/upload`, data)
       .then((res) => {
         console.log("Se ha subido una imagen");
         console.log(res);
         document.getElementById("fotoPrev2").src = res.data;
+        console.log(res.data, 'res.data onClickHandler')
         this.setState({
-          foto: res.data,
+          imagen: res.data.url,
         });
       })
       .catch((err) => {
@@ -252,7 +246,7 @@ class Inicio_page extends React.Component {
                     </div>
 
                     <div className="col-12">
-                    <label for="Descripcion" className="form-label">
+                      <label for="Descripcion" className="form-label">
                         Descripcion
                       </label>
                       <textarea
@@ -269,25 +263,26 @@ class Inicio_page extends React.Component {
                       <label for="sala_interactiva" className="form-label">
                         Sala interactiva
                       </label>
-                      
+
                       <select
                         className="form-control"
                         onChange={this.handleChange}
                         name="sala_interactiva"
                       >
-                        <option value="">{this.state.form.sala_interactiva}</option>
+                        <option value="">
+                          {this.state.form.sala_interactiva}
+                        </option>
                         <option value="Alta">Alta</option>
                         <option value="Media">Media</option>
                         <option value="Baja">Baja</option>
                       </select>
-
                     </div>
 
                     <div className="col-12">
                       <label for="email" className="form-label">
                         Imagen relacionada
                       </label>
-                      
+
                       <div className="foto-experiencia-img">
                         <img
                           className="foto-experiencia-img-ver"
@@ -296,9 +291,7 @@ class Inicio_page extends React.Component {
                           alt="Imagen"
                         />
                       </div>
-
                     </div>
-
 
                     <div className="col-12">
                       <label for="address" className="form-label">
@@ -402,7 +395,7 @@ class Inicio_page extends React.Component {
                     </div>
 
                     <div className="col-12">
-                    <label for="Descripcion" className="form-label">
+                      <label for="Descripcion" className="form-label">
                         Descripcion
                       </label>
                       <textarea
@@ -419,25 +412,26 @@ class Inicio_page extends React.Component {
                       <label for="sala_interactiva" className="form-label">
                         Sala interactiva
                       </label>
-                      
+
                       <select
                         className="form-control"
                         onChange={this.handleChange}
                         name="sala_interactiva"
                       >
-                        <option value="">{this.state.form.sala_interactiva}</option>
+                        <option value="">
+                          {this.state.form.sala_interactiva}
+                        </option>
                         <option value="Alta">Alta</option>
                         <option value="Media">Media</option>
                         <option value="Baja">Baja</option>
                       </select>
-
                     </div>
 
                     <div className="col-12">
                       <label for="email" className="form-label">
                         Imagen relacionada
                       </label>
-                      
+
                       <div className="foto-tarea-img">
                         <img
                           className="foto-tarea-img-ver"
@@ -446,7 +440,6 @@ class Inicio_page extends React.Component {
                           alt="Imagen"
                         />
                       </div>
-
                     </div>
 
                     <div className="col-12">
@@ -462,15 +455,15 @@ class Inicio_page extends React.Component {
                         name="file"
                         onChange={this.onChangeHandler}
                       />
-                      <div className="foto-tarea-img">
+                      <div className="foto-experiencia-img">
                         <img
-                          className="foto-tarea-img-ver"
+                          className="foto-experiencia-img-ver"
                           id="fotoPrev2"
-                          src="https://us.123rf.com/450wm/naropano/naropano1606/naropano160600550/58727711-fondo-gris-oscuro-el-dise%C3%B1o-de-textura-fondo-del-grunge-.jpg?ver=6"
+                          src={this.state.imagen}
                           alt="Imagen"
                         />
                       </div>
-                      <div className="foto-tarea-img">
+                      <div className="foto-experiencia-img">
                         <button
                           type="button"
                           className="btn btnimgUploader btn-primary"
@@ -577,18 +570,18 @@ class Inicio_page extends React.Component {
                           <p className="card-text">{datosT.sala_interactiva}</p>
                           <h6>Imagen relacionada</h6>
                           <img
-                          src={datosT.imagen_relacionada}
-                          width="100%"
-                          height="225"
-                          fill="none"
-                          stroke="currentColor"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          aria-hidden="true"
-                          className="me-2"
-                          viewBox="0 0 24 24"
-                        />
+                            src={datosT.imagen_relacionada}
+                            width="100%"
+                            height="225"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            aria-hidden="true"
+                            className="me-2"
+                            viewBox="0 0 24 24"
+                          />
                           <div className="d-flex justify-content-between align-items-center">
                             <div className="btn-group">
                               <button

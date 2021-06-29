@@ -1,42 +1,47 @@
+const { cloudinary } = require("../utils/cloudinary");
 const express = require("express");
 const router = express.Router();
+
+require("dotenv").config();
+
 const multer = require("multer");
-const uuid = require('uuid/v4');
+const uuid = require("uuid/v4");
 const path = require("path");
-const { Storage } = require("@google-cloud/storage");
 
-require('dotenv').config()
+var upload = multer({ dest: "./public/uploads" });
 
+router.get("/api/images", async (req, res) => {
+  const { resources } = await cloudinary.search
+    .expression("folder:dev_setups")
+    .sort_by("public_id", "desc")
+    .max_results(30)
+    .execute();
 
-const storage = new Storage({
-  projectId: process.env.GCLOUD_PROJECT,
-  credentials: {
-    client_email: process.env.GCLOUD_CLIENT_EMAIL,
-    private_key: process.env.GCLOUD_PRIVATE_KEY
+  const publicIds = resources.map((file) => file.public_id);
+  res.send(publicIds);
+});
+
+const fs = require("fs");
+function delete_file(name_file) {
+  try {
+    fs.unlinkSync(`./public/uploads/${name_file}`);
+    console.log("Archivo removidoPropTypes.any,");
+  } catch (err) {
+    console.error("Algo salio mal al remover el archivo.", err);
   }
-});
+}
 
-let uploadHandler = multer({
-  storage: multer.memoryStorage(),
-  limits: {
-    fileZise: 5 * 1024 * 1024
+router.post("/api/upload", upload.single("file"), async (req, res) => {
+  try {
+    await cloudinary.uploader.upload(req.file.path, function (error, result) {
+      delete_file(result.original_filename);
+      console.log(result.url, 'result');
+      res.json({ msg: "La imagen se a subido correctamente.", url: result.url });
+    });
+  } catch (err) {
+    console.error("Algo sali mal al subir la imagen.", err)
   }
+  
 });
-
-const bucket = storage.bucket(process.env.GCS_BUCKET)
-
-router.post('/imageupload', uploadHandler.single('file'), (req, res) => {
-  const newFileName = uuid() + path.extname(req.file.originalname);
-  const blob = bucket.file(newFileName);
-  const blobStream = blob.createWriteStream({
-    resumable: false,
-    gzip: true
-  }).on('finish', () => {
-    const publicURL = `https://storage.googleapis.com/${process.env.GCS_BUCKET}/${blob.name}`
-    res.json(publicURL);
-  });
-  blobStream.end(req.file.buffer);
-});
-
 
 module.exports = router;
