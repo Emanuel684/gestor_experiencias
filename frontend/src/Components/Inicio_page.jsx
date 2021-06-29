@@ -14,19 +14,19 @@ class Inicio_page extends React.Component {
     super(props);
     this.state = {
       File: null,
-      foto: "",
+      imagen: "",
       form: {
-        nombre: "",
-        prioridad: "",
-        fecha_vencimiento: "",
+        titulo: "",
+        descripcion: "",
+        sala_interactiva: "",
+        imagen_relacionada: "",
+        imagen: "",
         id_usuario: "",
       },
-      datos_alta: [],
-      datos_media: [],
-      datos_baja: [],
+      datos_experiencias: [],
       id_usuario: JSON.parse(sessionStorage.getItem("id_usuario")),
-      id_tarea: "",
-      datos_tarea: [],
+      id_experiencia: "",
+      datos_experiencia: [],
       boolLogin: false,
     };
   }
@@ -44,64 +44,26 @@ class Inicio_page extends React.Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    const user = {
-      nombre: this.state.form.nombre,
-      prioridad: this.state.form.prioridad,
-      fecha_vencimiento: this.state.form.fecha_vencimiento,
+    const experiencia = {
+      titulo: this.state.form.titulo,
+      descripcion: this.state.form.descripcion,
+      sala_interactiva: this.state.form.sala_interactiva,
+      imagen_relacionada: this.state.form.imagen_relacionada,
+      imagen: this.state.form.imagen,
       id_usuario: this.state.form.id_usuario,
     };
-    console.log("handleSubmit:", user);
+    console.log("handleSubmit:", experiencia);
   };
 
-  alertas = async () => {
-    {
-      this.state.datos_alta.map((datosT) => {
-        return (
-          <>
-            <link
-              rel="stylesheet"
-              href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.2/css/toastr.min.css"
-            />
-            <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-            <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.2/js/toastr.min.js"></script>
-            <script
-              src="https://code.jquery.com/jquery-3.5.1.min.js"
-              integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
-              crossorigin="anonymous"
-            ></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-            {toastr.error(datosT.nombre, "Esta tarea se vencera pronto.", {
-              closeButton: true,
-              debug: true,
-              newestOnTop: true,
-              progressBar: true,
-              positionClass: "toast-top-right",
-              preventDuplicates: false,
-              onclick: null,
-              showDuration: "300",
-              hideDuration: "1000",
-              timeOut: 0,
-              extendedTimeOut: 0,
-              showEasing: "swing",
-              hideEasing: "linear",
-              showMethod: "fadeIn",
-              hideMethod: "fadeOut",
-              tapToDismiss: false,
-            })}
-          </>
-        );
-      });
-    }
-  };
 
-  delete_tarea = async () => {
-    console.log("Esta es el id de la tarea:", this.state.id_tarea);
+  delete_experiencia = async () => {
+    console.log("Esta es el id de la experiencia:", this.state.id_experiencia);
     await axios
       .delete(
-        `http://localhost:4545/tareas/delete-tarea/${this.state.id_tarea}`
+        `http://localhost:4040/experiencias/delete-experiencia/${this.state.id_experiencia}`
       )
       .then((res) => {
-        console.log("Se ha eliminado una tarea.");
+        console.log("Se ha eliminado una experiencia.");
         this.componentWillMount();
       })
       .catch((err) => {
@@ -109,23 +71,25 @@ class Inicio_page extends React.Component {
       });
   };
 
-  upgrade_tarea_get = async () => {
+  upgrade_experiencia_get = async () => {
     axios
       .get(
-        `http://localhost:4545/tareas/tarea-upgrade-usuario/${this.state.id_tarea}`
+        `http://localhost:4040/experiencias/experiencia-upgrade-usuario/${this.state.id_experiencia}`
       )
       .then((res) => {
         console.log("datos get:", res.data);
         this.setState({
           form: {
-            nombre: res.data[0].nombre,
-            prioridad: res.data[0].prioridad,
-            fecha_vencimiento: res.data[0].fecha_vencimiento,
+            titulo: res.data[0].titulo,
+            descripcion: res.data[0].descripcion,
+            sala_interactiva: res.data[0].sala_interactiva,
+            imagen_relacionada: res.data[0].imagen_relacionada,
+            imagen: res.data[0].imagen,
             id_usuario: res.data[0].id_usuario,
           },
         });
         this.setState({
-          foto: res.data[0].foto,
+          imagen: res.data[0].imagen,
         });
       })
       .catch((err) => {
@@ -133,14 +97,15 @@ class Inicio_page extends React.Component {
       });
   };
 
-  upgrade_tarea_put = async () => {
-    console.log("upgrade foto:", this.state.foto);
+  upgrade_experiencia_put = async () => {
+    console.log("upgrade imagen:", this.state.imagen);
     await axios
-      .put(`http://localhost:4545/tareas/info-tarea/${this.state.id_tarea}`, {
+      .put(`http://localhost:4040/experiencias/info-experiencia/${this.state.id_experiencia}`, {
         nombre: this.state.form.nombre,
-        foto: this.state.foto,
-        prioridad: this.state.form.prioridad,
-        fecha_vencimiento: this.state.form.fecha_vencimiento,
+        descripcion: this.state.form.descripcion,
+        sala_interactiva: this.state.form.sala_interactiva,
+        imagen_relacionada: this.state.form.imagen_relacionada,
+        imagen: this.state.imagen,
         id_usuario: this.state.id_usuario.id_usuario,
       })
       .then((res) => {
@@ -152,21 +117,22 @@ class Inicio_page extends React.Component {
       });
   };
 
-  //Petición post para agregar nuevas tareas
-  post_tarea = async () => {
-    console.log("foto post", this.state.form.foto);
+  //Petición post para agregar nuevas experiencias
+  post_experiencia = async () => {
+    console.log("imagen post", this.state.form.imagen);
     console.log("formulario post:", this.state.form);
-    console.log("foto", this.state.foto);
+    console.log("imagen", this.state.imagen);
     await axios
-      .post(`http://localhost:4545/tareas/new-tarea`, {
-        nombre: this.state.form.nombre,
-        foto: this.state.foto,
-        prioridad: this.state.form.prioridad,
-        fecha_vencimiento: this.state.form.fecha_vencimiento,
+      .post(`http://localhost:4040/experiencias/new-experiencia`, {
+        titulo: this.state.form.titulo,
+        descripcion: this.state.form.descripcion,
+        sala_interactiva: this.state.form.sala_interactiva,
+        imagen_relacionada: /*this.state.form.imagen_relacionada*/ "https://i0.wp.com/evemuseografia.com/wp-content/uploads/2020/12/EVE09122020.jpg?fit=1170%2C696&ssl=1" ,
+        imagen: /*this.state.imagen*/ "https://i0.wp.com/evemuseografia.com/wp-content/uploads/2020/12/EVE09122020.jpg?fit=1170%2C696&ssl=1",
         id_usuario: this.state.id_usuario.id_usuario,
       })
       .then((res) => {
-        console.log("Se ha creado una nueva tarea");
+        console.log("Se ha creado una nueva experiencia.");
         this.componentWillMount();
       })
       .catch((err) => {
@@ -175,7 +141,7 @@ class Inicio_page extends React.Component {
   };
   //Fin post
 
-  //Petición get para traer todos los grupos
+  //Petición get para traer todos las experiencias de un usuario
   componentWillMount = async () => {
     console.log(
       "sessionStorage de login null:",
@@ -190,15 +156,13 @@ class Inicio_page extends React.Component {
       console.log("Se ejecuto el else if");
       await axios
         .get(
-          `http://localhost:4545/tareas/all-tareas-usuario-alta/${this.state.id_usuario.id_usuario}`
+          `http://localhost:4040/experiencias/all-experiencias-usuario/${this.state.id_usuario.id_usuario}`
         )
         .then((res) => {
           console.log(res.data);
           this.setState({
-            datos_alta: res.data,
+            datos_experiencias: res.data,
           });
-          this.get_datos_media();
-          this.alertas();
         })
         .catch((err) => {
           console.log(err.massage);
@@ -211,38 +175,6 @@ class Inicio_page extends React.Component {
   };
   // Fin get
 
-  get_datos_media = async () => {
-    await axios
-      .get(
-        `http://localhost:4545/tareas/all-tareas-usuario-media/${this.state.id_usuario.id_usuario}`
-      )
-      .then((res) => {
-        console.log(res.data);
-        this.setState({
-          datos_media: res.data,
-        });
-        this.get_datos_baja();
-      })
-      .catch((err) => {
-        console.log(err.massage);
-      });
-  };
-
-  get_datos_baja = async () => {
-    await axios
-      .get(
-        `http://localhost:4545/tareas/all-tareas-usuario-baja/${this.state.id_usuario.id_usuario}`
-      )
-      .then((res) => {
-        console.log(res.data);
-        this.setState({
-          datos_baja: res.data,
-        });
-      })
-      .catch((err) => {
-        console.log(err.massage);
-      });
-  };
 
   onChangeHandler = (event) => {
     console.log(event.target.files[0]);
@@ -256,7 +188,7 @@ class Inicio_page extends React.Component {
     const data = new FormData();
     data.append("file", this.state.File);
     await axios
-      .post(`http://localhost:4545/imageupload`, data)
+      .post(`http://localhost:4040/imageupload`, data)
       .then((res) => {
         console.log("Se ha subido una imagen");
         console.log(res);
@@ -272,13 +204,11 @@ class Inicio_page extends React.Component {
 
   render() {
     console.log(this.state.datos);
-    const tareasUsuarioAlta = this.state.datos_alta;
-    const tareasUsuarioMedia = this.state.datos_media;
-    const tareasUsuarioBaja = this.state.datos_baja;
+    const experienciasUsuario = this.state.datos_experiencias;
 
     return (
       <>
-        {/* MODAL EDITAR TAREA */}
+        {/* MODAL EDITAR EXPERIENCIA */}
         <div
           className="modal fade"
           id="editarTarea"
@@ -341,21 +271,6 @@ class Inicio_page extends React.Component {
                       </select>
                     </div>
 
-                    <div className="col-12">
-                      <label for="email" className="form-label">
-                        Fecha Vencimiento
-                      </label>
-                      <input
-                        type="date"
-                        id="start"
-                        className="form-control"
-                        value={this.state.form.fecha_vencimiento.slice(0, 10)}
-                        min={AñoY + "-01-" + "01"}
-                        max={AñoY + "-12-" + "31"}
-                        onChange={this.handleChange}
-                        name="fecha_vencimiento"
-                      />
-                    </div>
 
                     <div className="col-12">
                       <label for="address" className="form-label">
@@ -412,7 +327,7 @@ class Inicio_page extends React.Component {
           </div>
         </div>
         {/* FIN MODAL */}
-        {/* MODAL NUEVA TAREA */}
+        {/* MODAL NUEVA EXPERIENCIA */}
         <div
           className="modal fade"
           id="imgUpload"
@@ -426,7 +341,7 @@ class Inicio_page extends React.Component {
             <div className="modal-content">
               <div className="modal-header">
                 <h5 className="modal-title" id="staticBackdropLabel">
-                  Crear nueva tarea
+                  Crear nueva experiencia
                 </h5>
                 <button
                   type="button"
@@ -444,63 +359,78 @@ class Inicio_page extends React.Component {
                   onSubmit={this.handleSubmit}
                 >
                   <div className="row g-3">
-                    <div className="col-sm-6">
-                      <label for="firstName" className="form-label">
-                        Nombre
+                    <div className="col-12">
+                      <label for="titulo" className="form-label">
+                        Titulo
                       </label>
                       <input
                         type="text"
                         className="form-control"
-                        id="firstName"
-                        placeholder="Nombre de la tarea"
+                        id="titulo"
+                        placeholder="Titulo de la experiencia"
                         onChange={this.handleChange}
-                        name="nombre"
+                        name="titulo"
                       />
                     </div>
 
-                    <div className="col-sm-6">
-                      <label for="lastName" className="form-label">
-                        Prioridad
+                    <div className="col-12">
+                    <label for="Descripcion" className="form-label">
+                        Descripcion
                       </label>
+                      <textarea
+                        type="text"
+                        className="form-control"
+                        id="deescripcion"
+                        placeholder="Descripcion de la experiencia"
+                        onChange={this.handleChange}
+                        name="descripcion"
+                      />
+                    </div>
 
+                    <div className="col-12">
+                      <label for="sala_interactiva" className="form-label">
+                        Sala interactiva
+                      </label>
+                      
                       <select
                         className="form-control"
                         onChange={this.handleChange}
-                        name="prioridad"
+                        name="sala_interactiva"
                       >
-                        <option value="">Seleccionar</option>
+                        <option value="">{this.state.form.sala_interactiva}</option>
                         <option value="Alta">Alta</option>
                         <option value="Media">Media</option>
                         <option value="Baja">Baja</option>
                       </select>
+
                     </div>
 
                     <div className="col-12">
                       <label for="email" className="form-label">
-                        Fecha Vencimiento
+                        Imagen relacionada
                       </label>
-                      <input
-                        type="date"
-                        id="start"
-                        className="form-control"
-                        name="trip-start"
-                        min={AñoY + "-01-" + "01"}
-                        max={AñoY + "-12-" + "31"}
-                        onChange={this.handleChange}
-                        name="fecha_vencimiento"
-                      />
+                      
+                      <div className="foto-tarea-img">
+                        <img
+                          className="foto-tarea-img-ver"
+                          id="fotoPrev2"
+                          src="https://us.123rf.com/450wm/naropano/naropano1606/naropano160600550/58727711-fondo-gris-oscuro-el-dise%C3%B1o-de-textura-fondo-del-grunge-.jpg?ver=6"
+                          alt="Imagen"
+                        />
+                      </div>
+
                     </div>
 
                     <div className="col-12">
                       <label for="address" className="form-label">
-                        Foto
+                        Imagen
                       </label>
 
                       <input
                         type="file"
                         className="form-control"
                         accept="image/png, .jpeg, .jpg, image/gif"
-                        id="FOTO"
+                        id="imagen"
                         name="file"
                         onChange={this.onChangeHandler}
                       />
@@ -509,7 +439,7 @@ class Inicio_page extends React.Component {
                           className="foto-tarea-img-ver"
                           id="fotoPrev2"
                           src="https://us.123rf.com/450wm/naropano/naropano1606/naropano160600550/58727711-fondo-gris-oscuro-el-dise%C3%B1o-de-textura-fondo-del-grunge-.jpg?ver=6"
-                          alt="FOTO"
+                          alt="Imagen"
                         />
                       </div>
                       <div className="foto-tarea-img">
@@ -537,7 +467,7 @@ class Inicio_page extends React.Component {
                   type="submit"
                   className="btn btnimgUploader btn-primary"
                   data-dismiss="modal"
-                  onClick={this.post_tarea}
+                  onClick={this.post_experiencia}
                 >
                   Crear
                 </button>
@@ -581,7 +511,7 @@ class Inicio_page extends React.Component {
                 data-toggle="modal"
                 data-target="#imgUpload"
               >
-                Nueva tarea
+                Nueva experiencia
               </div>
             </div>
           </div>
@@ -590,14 +520,14 @@ class Inicio_page extends React.Component {
         <main>
           <div className="album py-5 bg-light">
             <div className="container">
-              <h1>Prioridad Alta</h1>
+              <h1>Experiencias</h1>
               <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-                {tareasUsuarioAlta.map((datosT) => {
+                {experienciasUsuario.map((datosT) => {
                   return (
                     <div className="col">
                       <div className="card shadow-sm" key={datosT._id}>
                         <img
-                          src={datosT.foto}
+                          src={datosT.imagen}
                           width="100%"
                           height="225"
                           fill="none"
@@ -611,7 +541,26 @@ class Inicio_page extends React.Component {
                         />
 
                         <div className="card-body">
-                          <p className="card-text">{datosT.nombre}</p>
+                          <h6>Titulo:</h6>
+                          <p className="card-text">{datosT.titulo}</p>
+                          <h6>Descripcion:</h6>
+                          <p className="card-text">{datosT.descripcion}</p>
+                          <h6>Sala interactiva</h6>
+                          <p className="card-text">{datosT.sala_interactiva}</p>
+                          <h6>Imagen relacionada</h6>
+                          <img
+                          src={datosT.imagen_relacionada}
+                          width="100%"
+                          height="225"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          aria-hidden="true"
+                          className="me-2"
+                          viewBox="0 0 24 24"
+                        />
                           <div className="d-flex justify-content-between align-items-center">
                             <div className="btn-group">
                               <button
@@ -642,133 +591,6 @@ class Inicio_page extends React.Component {
                                 Editar
                               </div>
                             </div>
-                            <small className="text-muted">
-                              {datosT.fecha_vencimiento.slice(0, 10)}
-                            </small>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-              <h1>Prioridad Media</h1>
-              <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-                {tareasUsuarioMedia.map((datosT) => {
-                  return (
-                    <div className="col">
-                      <div className="card shadow-sm" key={datosT._id}>
-                        <img
-                          src={datosT.foto}
-                          width="100%"
-                          height="225"
-                          fill="none"
-                          stroke="currentColor"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          aria-hidden="true"
-                          className="me-2"
-                          viewBox="0 0 24 24"
-                        />
-
-                        <div className="card-body">
-                          <p className="card-text">{datosT.nombre}</p>
-                          <div className="d-flex justify-content-between align-items-center">
-                            <div className="btn-group">
-                              <button
-                                type="button"
-                                className="btn btn-sm btn-danger"
-                                onClick={async () => {
-                                  console.log(datosT._id);
-                                  await this.setState({
-                                    id_tarea: datosT._id,
-                                  });
-                                  this.delete_tarea();
-                                }}
-                              >
-                                Eliminar
-                              </button>
-                              <div
-                                type="button"
-                                className="btn btn-sm btn-primary"
-                                data-target="#editarTarea"
-                                data-toggle="modal"
-                                onClick={async () => {
-                                  await this.setState({
-                                    id_tarea: datosT._id,
-                                  });
-                                  this.upgrade_tarea_get();
-                                }}
-                              >
-                                Editar
-                              </div>
-                            </div>
-                            <small className="text-muted">
-                              {datosT.fecha_vencimiento.slice(0, 10)}
-                            </small>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-              <h1>Prioridad Baja</h1>
-              <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-                {tareasUsuarioBaja.map((datosT) => {
-                  return (
-                    <div className="col">
-                      <div className="card shadow-sm" key={datosT._id}>
-                        <img
-                          src={datosT.foto}
-                          width="100%"
-                          height="225"
-                          fill="none"
-                          stroke="currentColor"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          aria-hidden="true"
-                          className="me-2"
-                          viewBox="0 0 24 24"
-                        />
-
-                        <div className="card-body">
-                          <p className="card-text">{datosT.nombre}</p>
-                          <div className="d-flex justify-content-between align-items-center">
-                            <div className="btn-group">
-                              <button
-                                type="button"
-                                className="btn btn-sm btn-danger"
-                                onClick={async () => {
-                                  console.log(datosT._id);
-                                  await this.setState({
-                                    id_tarea: datosT._id,
-                                  });
-                                  this.delete_tarea();
-                                }}
-                              >
-                                Eliminar
-                              </button>
-                              <div
-                                type="button"
-                                className="btn btn-sm btn-primary"
-                                data-target="#editarTarea"
-                                data-toggle="modal"
-                                onClick={async () => {
-                                  await this.setState({
-                                    id_tarea: datosT._id,
-                                  });
-                                  this.upgrade_tarea_get();
-                                }}
-                              >
-                                Editar
-                              </div>
-                            </div>
-                            <small className="text-muted">
-                              {datosT.fecha_vencimiento.slice(0, 10)}
-                            </small>
                           </div>
                         </div>
                       </div>

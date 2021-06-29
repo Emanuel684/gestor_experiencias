@@ -25,7 +25,7 @@ class Login_usuarios extends React.Component {
 
   login = async () => {
     await axios
-      .post(`http://localhost:4545/api/login`, {
+      .post(`http://localhost:4040/api/login`, {
         correo_electronico: this.state.form.correo_electronico,
         contrasena: this.state.form.contrasena,
       })
@@ -58,7 +58,7 @@ class Login_usuarios extends React.Component {
     let token_authorization = "bearer " + this.state.token;
     console.log(token_authorization);
     await axios
-      .get(`http://localhost:4545/api/privada`, {
+      .get(`http://localhost:4040/api/privada`, {
         headers: {
           Authorization: `${token_authorization}`,
         },
@@ -94,13 +94,12 @@ class Login_usuarios extends React.Component {
   //Petición post para enviar un correo al login
   post_email = async () => {
     await axios
-      .post(`http://localhost:4545/nodemailer/send-login`, {
+      .post(`http://localhost:4040/nodemailer/send-login`, {
         to: this.state.form.correo_electronico,
-        subject: "Bienvenido!!",
-        full_name: `Nombre de prueba`,
+        subject: "Bienvenido!!"
       })
       .then((res) => {
-        console.log('res.data:',res.data);
+        console.log("res.data:", res.data);
       })
       .catch((err) => {
         console.log(err.massage);
@@ -109,15 +108,14 @@ class Login_usuarios extends React.Component {
   //Fin post
 
   //Petición get para traer todos los grupos
-  componentWillMount = async() => {
+  componentWillMount = async () => {
     sessionStorage.setItem(
       "login",
       JSON.stringify({
-        login: false
+        login: false,
       })
     );
-    
-  }
+  };
   // Fin get
 
   handleChange = async (e) => {

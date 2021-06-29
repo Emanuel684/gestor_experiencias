@@ -352,7 +352,7 @@ router.post("/send-login", (req, res) => {
   console.log(full_name);
 
   const mailOptions = {
-    from: "Login en Gestor de Tareas",
+    from: "Login en Gestor de Experiencias",
     to: to,
     subject: subject,
     html: contentHTML,
@@ -700,7 +700,7 @@ router.post("/send-register", (req, res) => {
   console.log(full_name);
 
   const mailOptions = {
-    from: "Registro en Gestor de Tareas",
+    from: "Registro en Gestor de Experiencias",
     to: to,
     subject: subject,
     html: contentHTML,

@@ -23,7 +23,7 @@ app.use(bodyParser.urlencoded({ limit: "100mb", extended: true }));
 // routes
 app.use("/nodemailer", nodemailer);
 app.use("/usuarios", require("./routes/usuarios"));
-app.use("/tareas", require("./routes/tareas"));
+app.use("/experiencias", require("./routes/experiencias"));
 
 
 app.use(require('./routes/uploadImg.routes'))

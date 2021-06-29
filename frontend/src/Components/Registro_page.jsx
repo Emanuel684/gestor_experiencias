@@ -3,7 +3,7 @@ import axios from "axios";
 
 import "../Styles/Registro_page.css";
 
-import { BrowserRouter as Router, Redirect, Link } from "react-router-dom";
+import { Redirect, Link } from "react-router-dom";
 
 class Login_usuarios extends React.Component {
   constructor(props) {
@@ -23,7 +23,7 @@ class Login_usuarios extends React.Component {
   //Petición post para agregar nuevos usuarios
   post_usuario = async () => {
     await axios
-      .post(`http://localhost:4545/usuarios/new-usuario`, {
+      .post(`http://localhost:4040/usuarios/new-usuario`, {
         nombres: this.state.form.nombres,
         apellidos: this.state.form.apellidos,
         correo_electronico: this.state.form.correo_electronico,
@@ -43,7 +43,7 @@ class Login_usuarios extends React.Component {
   //Petición post para enviar un correo al nuevo usuario
   post_email = async () => {
     await axios
-      .post(`http://localhost:4545/nodemailer/send-register`, {
+      .post(`http://localhost:4040/nodemailer/send-register`, {
         to: this.state.form.correo_electronico,
         subject: "Bienvenido!!",
         full_name: `${
@@ -51,7 +51,7 @@ class Login_usuarios extends React.Component {
         }`,
       })
       .then((res) => {
-        console.log('res.data:',res.data);
+        console.log("res.data:", res.data);
       })
       .catch((err) => {
         console.log(err.massage);
