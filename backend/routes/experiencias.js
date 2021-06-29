@@ -4,17 +4,29 @@ const router = Router();
 
 // Get para mostrar todas las experiencias existentes
 // Funciona Jest
-router.get("/all-experiencias", async (req, res) => {
+// Esta en la lista
+router.get("/", async (req, res) => {
   const experiencias = await Experiencias.find().sort("-_id");
   res.json(experiencias);
 });
 
-// Get para mostrar los datos de una experiencia
+// Get para mostrar los datos de una experiencia y consultar una experiencia
 // Funciona Jest
-router.get("/experiencia-upgrade-usuario/:id", async (req, res) => {
+// Esta en la lista
+router.get("/:id", async (req, res) => {
   const id_experiencia = req.params;
   console.log("Este es el id de la experiencia", id_experiencia.id);
   const experiencias = await Experiencias.find({ _id: id_experiencia.id });
+  res.json(experiencias);
+});
+
+// Get que obtiene todas las experiencias filtradas por sala
+// Funciona Jest
+// Esta en la lista
+router.get("/:sala_interactiva", async (req, res) => {
+  const sala_interactiva = req.params;
+  console.log("Este es el nombre de la sala interactiva", sala_interactiva.sala_interactiva);
+  const experiencias = await Experiencias.find({ sala_interactiva: sala_interactiva.sala_interactiva });
   res.json(experiencias);
 });
 
@@ -32,7 +44,8 @@ router.get("/all-experiencias-usuario/:id", async (req, res) => {
 
 // Post para crear una nueva experiencia
 // Funciona Jest
-router.post("/new-experiencia", async (req, res) => {
+// Esta en la lista
+router.post("/", async (req, res) => {
   const { titulo, descripcion, sala_interactiva, imagen_relacionada, imagen, id_usuario } = req.body;
   const newExperiencia = new Experiencias({
     titulo,
@@ -48,7 +61,8 @@ router.post("/new-experiencia", async (req, res) => {
 
 // Actualizar la informacion de una experiencia
 // Funciona
-router.put("/info-experiencia/:id", async (req, res) => {
+// Esta en la lista
+router.put("/:id", async (req, res) => {
   const { titulo, descripcion, sala_interactiva, imagen_relacionada, imagen, id_usuario } = req.body;
   const _id = req.params.id;
   console.log("Id de la experiencia:", _id);
@@ -68,7 +82,8 @@ router.put("/info-experiencia/:id", async (req, res) => {
 
 // Eliminar una experiencia
 // Funciona
-router.delete("/delete-experiencia/:id", async (req, res) => {
+// Esta en la lista
+router.delete("/:id", async (req, res) => {
   const id = req.params.id;
   const experiencias = await Experiencias.findByIdAndDelete(id);
   res.json({ message: "Tarea eliminada." });

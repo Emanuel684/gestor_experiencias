@@ -1,7 +1,7 @@
 .col {
     padding-bottom: 25px;
 }
-.foto-tarea-img{
+.foto-experiencia-img{
     display: flex;
     align-items: center;
     justify-content: center;
@@ -9,7 +9,7 @@
     margin-top: 10px;
 }
 
-.foto-tarea-img-ver{
+.foto-experiencia-img-ver{
     border-radius: 13px;
     width: 200px;
     height: 200px;

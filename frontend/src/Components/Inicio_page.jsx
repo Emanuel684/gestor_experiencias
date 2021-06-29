@@ -1,14 +1,11 @@
 import React from "react";
 import axios from "axios";
-import toastr from "toastr";
 
 import "../Styles/Inicio_page.css";
-import "../Styles/toastr.css";
 
 import { Link, Redirect } from "react-router-dom";
 
-const Año = new Date();
-const AñoY = Año.getFullYear();
+
 class Inicio_page extends React.Component {
   constructor(props) {
     super(props);
@@ -60,7 +57,7 @@ class Inicio_page extends React.Component {
     console.log("Esta es el id de la experiencia:", this.state.id_experiencia);
     await axios
       .delete(
-        `http://localhost:4040/experiencias/delete-experiencia/${this.state.id_experiencia}`
+        `http://localhost:4040/${this.state.id_experiencia}`
       )
       .then((res) => {
         console.log("Se ha eliminado una experiencia.");
@@ -74,7 +71,7 @@ class Inicio_page extends React.Component {
   upgrade_experiencia_get = async () => {
     axios
       .get(
-        `http://localhost:4040/experiencias/experiencia-upgrade-usuario/${this.state.id_experiencia}`
+        `http://localhost:4040/${this.state.id_experiencia}`
       )
       .then((res) => {
         console.log("datos get:", res.data);
@@ -100,12 +97,12 @@ class Inicio_page extends React.Component {
   upgrade_experiencia_put = async () => {
     console.log("upgrade imagen:", this.state.imagen);
     await axios
-      .put(`http://localhost:4040/experiencias/info-experiencia/${this.state.id_experiencia}`, {
-        nombre: this.state.form.nombre,
+      .put(`http://localhost:4040/${this.state.id_experiencia}`, {
+        titulo: this.state.form.titulo,
         descripcion: this.state.form.descripcion,
         sala_interactiva: this.state.form.sala_interactiva,
-        imagen_relacionada: this.state.form.imagen_relacionada,
-        imagen: this.state.imagen,
+        imagen_relacionada: /*this.state.form.imagen_relacionada*/ "https://www.mdirector.com/wp-content/uploads/2017/09/experiencia-usuario-ok.jpg",
+        imagen: /*this.state.imagen*/ "https://www.mdirector.com/wp-content/uploads/2017/09/experiencia-usuario-ok.jpg",
         id_usuario: this.state.id_usuario.id_usuario,
       })
       .then((res) => {
@@ -123,7 +120,7 @@ class Inicio_page extends React.Component {
     console.log("formulario post:", this.state.form);
     console.log("imagen", this.state.imagen);
     await axios
-      .post(`http://localhost:4040/experiencias/new-experiencia`, {
+      .post(`http://localhost:4040/`, {
         titulo: this.state.form.titulo,
         descripcion: this.state.form.descripcion,
         sala_interactiva: this.state.form.sala_interactiva,
@@ -156,7 +153,7 @@ class Inicio_page extends React.Component {
       console.log("Se ejecuto el else if");
       await axios
         .get(
-          `http://localhost:4040/experiencias/all-experiencias-usuario/${this.state.id_usuario.id_usuario}`
+          `http://localhost:4040/all-experiencias-usuario/${this.state.id_usuario.id_usuario}`
         )
         .then((res) => {
           console.log(res.data);
@@ -222,7 +219,7 @@ class Inicio_page extends React.Component {
             <div className="modal-content">
               <div className="modal-header">
                 <h5 className="modal-title" id="staticBackdropLabel">
-                  Editar tarea
+                  Editar experiencia
                 </h5>
                 <button
                   type="button"
@@ -240,41 +237,72 @@ class Inicio_page extends React.Component {
                   onSubmit={this.handleSubmit}
                 >
                   <div className="row g-3">
-                    <div className="col-sm-6">
-                      <label for="firstName" className="form-label">
-                        Nombre
+                    <div className="col-12">
+                      <label for="titulo" className="form-label">
+                        Titulo
                       </label>
                       <input
                         type="text"
                         className="form-control"
-                        id="firstName"
-                        placeholder={this.state.form.nombre}
+                        id="titulo"
+                        placeholder={this.state.form.titulo}
                         onChange={this.handleChange}
-                        name="nombre"
+                        name="titulo"
                       />
                     </div>
 
-                    <div className="col-sm-6">
-                      <label for="lastName" className="form-label">
-                        Prioridad
+                    <div className="col-12">
+                    <label for="Descripcion" className="form-label">
+                        Descripcion
                       </label>
+                      <textarea
+                        type="text"
+                        className="form-control"
+                        id="deescripcion"
+                        placeholder={this.state.form.descripcion}
+                        onChange={this.handleChange}
+                        name="descripcion"
+                      />
+                    </div>
 
+                    <div className="col-12">
+                      <label for="sala_interactiva" className="form-label">
+                        Sala interactiva
+                      </label>
+                      
                       <select
                         className="form-control"
                         onChange={this.handleChange}
-                        name="prioridad"
+                        name="sala_interactiva"
                       >
-                        <option value="">{this.state.form.prioridad}</option>
+                        <option value="">{this.state.form.sala_interactiva}</option>
                         <option value="Alta">Alta</option>
                         <option value="Media">Media</option>
                         <option value="Baja">Baja</option>
                       </select>
+
+                    </div>
+
+                    <div className="col-12">
+                      <label for="email" className="form-label">
+                        Imagen relacionada
+                      </label>
+                      
+                      <div className="foto-experiencia-img">
+                        <img
+                          className="foto-experiencia-img-ver"
+                          id="fotoPrev2"
+                          src={this.state.form.imagen_relacionada}
+                          alt="Imagen"
+                        />
+                      </div>
+
                     </div>
 
 
                     <div className="col-12">
                       <label for="address" className="form-label">
-                        Foto
+                        Imagen
                       </label>
 
                       <input
@@ -285,11 +313,11 @@ class Inicio_page extends React.Component {
                         name="file"
                         onChange={this.onChangeHandler}
                       />
-                      <div className="foto-tarea-img">
+                      <div className="foto-experiencia-img">
                         <img
-                          className="foto-tarea-img-ver"
+                          className="foto-experiencia-img-ver"
                           id="fotoPrev1"
-                          src={this.state.foto}
+                          src={this.state.imagen}
                           alt="FOTO"
                         />
                       </div>
@@ -318,7 +346,7 @@ class Inicio_page extends React.Component {
                   type="submit"
                   className="btn btnimgUploader btn-primary"
                   data-dismiss="modal"
-                  onClick={this.upgrade_tarea_put}
+                  onClick={this.upgrade_experiencia_put}
                 >
                   Actualizar
                 </button>
@@ -569,9 +597,9 @@ class Inicio_page extends React.Component {
                                 onClick={async () => {
                                   console.log(datosT._id);
                                   await this.setState({
-                                    id_tarea: datosT._id,
+                                    id_experiencia: datosT._id,
                                   });
-                                  this.delete_tarea();
+                                  this.delete_experiencia();
                                 }}
                               >
                                 Eliminar
@@ -583,9 +611,9 @@ class Inicio_page extends React.Component {
                                 data-toggle="modal"
                                 onClick={async () => {
                                   await this.setState({
-                                    id_tarea: datosT._id,
+                                    id_experiencia: datosT._id,
                                   });
-                                  this.upgrade_tarea_get();
+                                  this.upgrade_experiencia_get();
                                 }}
                               >
                                 Editar
