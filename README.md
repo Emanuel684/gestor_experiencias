@@ -1,2 +1,2 @@
-# gestor_tareas
-Este es el repo del proyecto de Prueba Técnica Gestión de Tareas.
+# gestor_experiencias
+Este es el repositorio del gestor de experiencias realizado como prueba tecnica para el cupo de Desarrollador en el Parque Explora.
