@@ -12,6 +12,7 @@ class Inicio_page extends React.Component {
       File: null,
       imagen: "",
       public_id_imagen: "",
+      imagen_relacionada_prev: "",
       form: {
         titulo: "",
         descripcion: "",
@@ -26,8 +27,36 @@ class Inicio_page extends React.Component {
       id_experiencia: "",
       datos_experiencia: [],
       boolLogin: false,
+      titulo2: "",
     };
   }
+
+  // Consulta a la API para generar las imagenes aleatorias
+  get_imagen_relacionada = async () => {
+    console.log(this.state.titulo2, "Titulo2");
+    console.log(this.state.form.titulo, "this.state.form.titulo");
+
+    if (this.state.form.titulo == "") {
+      this.setState({
+        imagen_relacionada_prev: "",
+      });
+    } else if (this.state.form.titulo != "") {
+      var length = this.state.datos_api.length;
+      console.log(length, "length");
+      var length_imagen = Math.floor(Math.random() * (length - 0)) + 0;
+      console.log(length_imagen, "length_imagen");
+      console.log(
+        this.state.datos_api[length_imagen],
+        "this.state.datos_api[length_imagen]"
+      );
+      this.setState({
+        imagen_relacionada_prev:
+          this.state.datos_api[length_imagen].jetpack_featured_media_url,
+        titulo2: this.state.form.titulo,
+      });
+    }
+  };
+  // Fin de la consulta para consultar las imagenes aletorias
 
   // Consulta a la API para generar las imagenes aleatorias
   get_data_api = async () => {
@@ -36,7 +65,7 @@ class Inicio_page extends React.Component {
       .then((res) => {
         console.log("datos get_imagenes:", res.data);
         this.setState({
-          datos_api: res.data
+          datos_api: res.data,
         });
       })
       .catch((err) => {
@@ -54,6 +83,9 @@ class Inicio_page extends React.Component {
       },
     });
     console.log("handleChange", this.state.form);
+    if (this.state.titulo2 != this.state.form.titulo) {
+      this.get_imagen_relacionada();
+    }
   };
 
   handleSubmit = (e) => {
@@ -157,8 +189,8 @@ class Inicio_page extends React.Component {
         document.getElementById("sala_interactiva-select-create").value = "";
         document.getElementById("imagen-input-create").value = "";
         this.setState({
-          imagen: ""
-        })
+          imagen: "",
+        });
         this.componentWillMount();
       })
       .catch((err) => {
@@ -234,7 +266,7 @@ class Inicio_page extends React.Component {
     console.log(this.state.datos);
     const experienciasUsuario = this.state.datos_experiencias;
     const imagenes_relacionadas_api = this.state.datos_api;
-    console.log(imagenes_relacionadas_api, 'imagenes_relacionadas_api');
+    console.log(imagenes_relacionadas_api, "imagenes_relacionadas_api");
 
     return (
       <>
@@ -313,11 +345,17 @@ class Inicio_page extends React.Component {
                         </option>
                         <option value="Sala músical">Sala músical</option>
                         <option value="Dinosaurios">Dinosaurios</option>
-                        <option value="Cuerpo, relaciones vitales">Cuerpo, relaciones vitales</option>
+                        <option value="Cuerpo, relaciones vitales">
+                          Cuerpo, relaciones vitales
+                        </option>
                         <option value="Sala infantil">Sala infantil</option>
-                        <option value="Mente, el mundo adentro">Mente, el mundo adentro</option>
+                        <option value="Mente, el mundo adentro">
+                          Mente, el mundo adentro
+                        </option>
                         <option value="Sala en escena">Sala en escena</option>
-                        <option value="Tiempo, más allá del reloj">Tiempo, más allá del reloj</option>
+                        <option value="Tiempo, más allá del reloj">
+                          Tiempo, más allá del reloj
+                        </option>
                       </select>
                     </div>
 
@@ -462,16 +500,20 @@ class Inicio_page extends React.Component {
                         name="sala_interactiva"
                         id="sala_interactiva-select-create"
                       >
-                        <option value="">
-                          
-                        </option>
+                        <option value=""></option>
                         <option value="Sala músical">Sala músical</option>
                         <option value="Dinosaurios">Dinosaurios</option>
-                        <option value="Cuerpo, relaciones vitales">Cuerpo, relaciones vitales</option>
+                        <option value="Cuerpo, relaciones vitales">
+                          Cuerpo, relaciones vitales
+                        </option>
                         <option value="Sala infantil">Sala infantil</option>
-                        <option value="Mente, el mundo adentro">Mente, el mundo adentro</option>
+                        <option value="Mente, el mundo adentro">
+                          Mente, el mundo adentro
+                        </option>
                         <option value="Sala en escena">Sala en escena</option>
-                        <option value="Tiempo, más allá del reloj">Tiempo, más allá del reloj</option>
+                        <option value="Tiempo, más allá del reloj">
+                          Tiempo, más allá del reloj
+                        </option>
                       </select>
                     </div>
 
@@ -483,8 +525,11 @@ class Inicio_page extends React.Component {
                       <div className="foto-tarea-img">
                         <img
                           className="foto-experiencia-img-ver"
-                          id="fotoPrev2"
-                          src="https://us.123rf.com/450wm/naropano/naropano1606/naropano160600550/58727711-fondo-gris-oscuro-el-dise%C3%B1o-de-textura-fondo-del-grunge-.jpg?ver=6"
+                          id="ImagenPrevRelacionada"
+                          src={
+                            this.state.imagen_relacionada_prev ||
+                            "https://us.123rf.com/450wm/naropano/naropano1606/naropano160600550/58727711-fondo-gris-oscuro-el-dise%C3%B1o-de-textura-fondo-del-grunge-.jpg?ver=6"
+                          }
                           alt="Imagen"
                         />
                       </div>
@@ -507,7 +552,10 @@ class Inicio_page extends React.Component {
                         <img
                           className="foto-experiencia-img-ver"
                           id="fotoPrev23"
-                          src={this.state.imagen || "https://us.123rf.com/450wm/naropano/naropano1606/naropano160600550/58727711-fondo-gris-oscuro-el-dise%C3%B1o-de-textura-fondo-del-grunge-.jpg?ver=6"}
+                          src={
+                            this.state.imagen ||
+                            "https://us.123rf.com/450wm/naropano/naropano1606/naropano160600550/58727711-fondo-gris-oscuro-el-dise%C3%B1o-de-textura-fondo-del-grunge-.jpg?ver=6"
+                          }
                           alt="Imagen"
                         />
                       </div>
