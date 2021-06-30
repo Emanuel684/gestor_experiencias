@@ -30,7 +30,6 @@ class Login_usuarios extends React.Component {
         contrasena: this.state.form.contrasena,
       })
       .then((res) => {
-        console.log("Se ha creado un nuevo usuario");
         this.post_email();
         this.setState({ Bool1: true });
       })
@@ -67,7 +66,6 @@ class Login_usuarios extends React.Component {
         [e.target.name]: e.target.value,
       },
     });
-    console.log(this.state.form);
   };
 
   render() {

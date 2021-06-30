@@ -54,7 +54,6 @@ class Inicio_page extends React.Component {
     axios
       .get(`https://encasa.parqueexplora.org/wp-json/wp/v2/posts`)
       .then((res) => {
-        console.log("datos get_imagenes:", res.data);
         this.setState({
           datos_api: res.data,
         });
@@ -96,15 +95,12 @@ class Inicio_page extends React.Component {
         `http://localhost:4040/${this.state.id_experiencia}/${this.state.public_id_imagen}`
       )
       .then((res) => {
-        console.log("Se ha eliminado una experiencia.");
-
         document.getElementById("id-delete-experiencia").style.display =
           "block";
         setTimeout(function () {
           document.getElementById("id-delete-experiencia").style.display =
             "none";
         }, 3000);
-
         this.componentWillMount();
       })
       .catch((err) => {
@@ -116,7 +112,6 @@ class Inicio_page extends React.Component {
     axios
       .get(`http://localhost:4040/${this.state.id_experiencia}`)
       .then((res) => {
-        console.log("datos get:", res.data);
         this.setState({
           form: {
             titulo: res.data[0].titulo,
@@ -144,7 +139,7 @@ class Inicio_page extends React.Component {
           titulo: this.state.form.titulo,
           descripcion: this.state.form.descripcion,
           sala_interactiva: this.state.form.sala_interactiva,
-          imagen_relacionada: this.state.imagen_relacionada_prevqq,
+          imagen_relacionada: this.state.imagen_relacionada_prev,
           imagen: this.state.imagen,
           public_id: this.state.public_id,
           id_usuario: this.state.id_usuario.id_usuario,
@@ -196,23 +191,12 @@ class Inicio_page extends React.Component {
 
   //Petición get para traer todos las experiencias de un usuario
   componentWillMount = async () => {
-    console.log(
-      "sessionStorage de login null:",
-      JSON.parse(sessionStorage.getItem("login"))
-    );
-    console.log(
-      "sessionStorage de login:",
-      JSON.parse(sessionStorage.getItem("login")).login
-    );
-    console.log("if hola", JSON.stringify(sessionStorage.getItem("login")));
     if (JSON.parse(sessionStorage.getItem("login")).login) {
-      console.log("Se ejecuto el else if");
       await axios
         .get(
           `http://localhost:4040/all-experiencias-usuario/${this.state.id_usuario.id_usuario}`
         )
         .then((res) => {
-          console.log(res.data);
           this.setState({
             datos_experiencias: res.data,
           });
@@ -222,15 +206,12 @@ class Inicio_page extends React.Component {
           console.log(err.massage);
         });
     } else {
-      console.log("Se ejecuto el else");
-
       this.setState({ boolLogin: true });
     }
   };
   // Fin get
 
   onChangeHandler = (event) => {
-    console.log(event.target.files[0]);
     this.setState({
       File: event.target.files[0],
       loaded: 0,
@@ -243,10 +224,7 @@ class Inicio_page extends React.Component {
     await axios
       .post(`http://localhost:4040/api/upload`, data)
       .then((res) => {
-        console.log("Se ha subido una imagen");
-        console.log(res);
         document.getElementById("fotoPrev2").src = res.data;
-        console.log(res.data, "res.data onClickHandler");
         this.setState({
           imagen: res.data.url,
           public_id: res.data.public_id,
@@ -259,7 +237,6 @@ class Inicio_page extends React.Component {
 
   render() {
     const experienciasUsuario = this.state.datos_experiencias;
-    const imagenes_relacionadas_api = this.state.datos_api;
 
     return (
       <>
@@ -287,7 +264,7 @@ class Inicio_page extends React.Component {
                   onClick={async () => {
                     await this.setState({
                       imagen: "",
-                      imagen_relacionada_prev: ""
+                      imagen_relacionada_prev: "",
                     });
                   }}
                 >
@@ -303,7 +280,7 @@ class Inicio_page extends React.Component {
                   <div className="row g-3">
                     <div className="col-12">
                       <label for="titulo" className="form-label">
-                      <strong>Titulo</strong>
+                        <strong>Titulo</strong>
                       </label>
                       <input
                         type="text"
@@ -317,7 +294,7 @@ class Inicio_page extends React.Component {
 
                     <div className="col-12">
                       <label for="Descripcion" className="form-label">
-                      <strong>Descripcion</strong>
+                        <strong>Descripcion</strong>
                       </label>
                       <textarea
                         type="text"
@@ -331,7 +308,7 @@ class Inicio_page extends React.Component {
 
                     <div className="col-12">
                       <label for="sala_interactiva" className="form-label">
-                      <strong>Sala interactiva</strong>
+                        <strong>Sala interactiva</strong>
                       </label>
 
                       <select
@@ -360,14 +337,17 @@ class Inicio_page extends React.Component {
 
                     <div className="col-12">
                       <label for="email" className="form-label">
-                      <strong>Imagen relacionada</strong>
+                        <strong>Imagen relacionada</strong>
                       </label>
 
                       <div className="foto-experiencia-img">
                         <img
                           className="foto-experiencia-img-ver"
                           id="fotoPrev2"
-                          src={this.state.imagen_relacionada_prev || this.state.form.imagen_relacionada}
+                          src={
+                            this.state.imagen_relacionada_prev ||
+                            this.state.form.imagen_relacionada
+                          }
                           alt="Imagen"
                         />
                       </div>
@@ -462,7 +442,7 @@ class Inicio_page extends React.Component {
                   <div className="row g-3">
                     <div className="col-12">
                       <label for="titulo" className="form-label">
-                      <strong>Titulo</strong>
+                        <strong>Titulo</strong>
                       </label>
                       <input
                         type="text"
@@ -476,7 +456,7 @@ class Inicio_page extends React.Component {
 
                     <div className="col-12">
                       <label for="Descripcion" className="form-label">
-                      <strong>Descripcion</strong>
+                        <strong>Descripcion</strong>
                       </label>
                       <textarea
                         type="text"
@@ -490,7 +470,7 @@ class Inicio_page extends React.Component {
 
                     <div className="col-12">
                       <label for="sala_interactiva" className="form-label">
-                      <strong>Sala interactiva</strong>
+                        <strong>Sala interactiva</strong>
                       </label>
 
                       <select
@@ -518,7 +498,7 @@ class Inicio_page extends React.Component {
 
                     <div className="col-12">
                       <label for="imagen_relacionada" className="form-label">
-                      <strong>Imagen relacionada</strong>
+                        <strong>Imagen relacionada</strong>
                       </label>
 
                       <div className="foto-experiencia-img">
@@ -536,7 +516,7 @@ class Inicio_page extends React.Component {
 
                     <div className="col-12">
                       <label for="file" className="form-label">
-                      <strong>Imagen</strong>
+                        <strong>Imagen</strong>
                       </label>
 
                       <input
@@ -594,7 +574,7 @@ class Inicio_page extends React.Component {
         {/* FIN MODAL */}
 
         <header>
-          <div className="navbar navbar-purple bg-dark shadow-sm">
+          <div className="navbar bg-dark shadow-sm">
             <div className="container">
               <Link to="/">
                 <div
@@ -649,7 +629,11 @@ class Inicio_page extends React.Component {
             >
               Experiencia correctamente eliminada.
             </div>
-            <div class="alert alert-info" id="id-update-experiencia" role="alert">
+            <div
+              class="alert alert-info"
+              id="id-update-experiencia"
+              role="alert"
+            >
               Experiencia actualizada correctamente.
             </div>
           </div>
@@ -677,28 +661,31 @@ class Inicio_page extends React.Component {
 
                         <div className="card-body">
                           <div>
-                          <h5 className="h6-card">{datosT.titulo}</h5>
+                            <h5 className="h6-card">{datosT.titulo}</h5>
                           </div>
                           <div>
-                          <p className="card-text">{datosT.descripcion}</p>
+                            <p className="card-text">{datosT.descripcion}</p>
                           </div>
                           <div>
-                          <p className="card-text"><strong>Sala interactiva:</strong> {datosT.sala_interactiva}</p>
+                            <p className="card-text">
+                              <strong>Sala interactiva:</strong>{" "}
+                              {datosT.sala_interactiva}
+                            </p>
                           </div>
                           <div className="div-imagen-relacionada">
-                          <img
-                            src={datosT.imagen_relacionada}
-                            width="100%"
-                            height="225"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            aria-hidden="true"
-                            className="me-2 img-relacionada"
-                            viewBox="0 0 24 24"
-                          />
+                            <img
+                              src={datosT.imagen_relacionada}
+                              width="100%"
+                              height="225"
+                              fill="none"
+                              stroke="currentColor"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              aria-hidden="true"
+                              className="me-2 img-relacionada"
+                              viewBox="0 0 24 24"
+                            />
                           </div>
                           <div className="d-flex justify-content-between align-items-center">
                             <div className="btn-group botones-inferiores">
@@ -706,7 +693,6 @@ class Inicio_page extends React.Component {
                                 type="button"
                                 className="btn btn-sm btn-danger"
                                 onClick={async () => {
-                                  console.log(datosT._id);
                                   await this.setState({
                                     id_experiencia: datosT._id,
                                     public_id_imagen: datosT.public_id,

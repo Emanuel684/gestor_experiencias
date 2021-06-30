@@ -30,14 +30,10 @@ class Login_usuarios extends React.Component {
         contrasena: this.state.form.contrasena,
       })
       .then((res) => {
-        console.log(res);
-        console.log(res.data.token);
         this.setState({ token: res.data.token });
-        console.log(this.state.token);
         if (
           res.data.message == "Asegurese de ingresar los datos correctamente."
         ) {
-          console.log(res.data.message);
         } else {
           sessionStorage.setItem(
             "login",
@@ -56,7 +52,6 @@ class Login_usuarios extends React.Component {
 
   login2 = async () => {
     let token_authorization = "bearer " + this.state.token;
-    console.log(token_authorization);
     await axios
       .get(`http://localhost:4040/api/privada`, {
         headers: {
@@ -66,7 +61,6 @@ class Login_usuarios extends React.Component {
       .then((res) => {
         this.setState({ datos_user: res.data.data });
         this.setState({ id_usuario: res.data.data.result[0]._id });
-        console.log("id del usuario en el estado", this.state.id_usuario);
         this.Ingreso();
       })
       .catch((err) => {
@@ -77,10 +71,6 @@ class Login_usuarios extends React.Component {
   Ingreso = async () => {
     if (this.state.id_usuario) {
       this.post_email();
-      console.log(
-        "Esta es el id_usuario en la funcion de ingreso",
-        this.state.id_usuario
-      );
       sessionStorage.setItem(
         "id_usuario",
         JSON.stringify({
@@ -96,11 +86,9 @@ class Login_usuarios extends React.Component {
     await axios
       .post(`http://localhost:4040/nodemailer/send-login`, {
         to: this.state.form.correo_electronico,
-        subject: "Bienvenido!!"
+        subject: "Bienvenido!!",
       })
-      .then((res) => {
-        console.log("res.data:", res.data);
-      })
+      .then((res) => {})
       .catch((err) => {
         console.log(err.massage);
       });
@@ -126,7 +114,6 @@ class Login_usuarios extends React.Component {
         [e.target.name]: e.target.value,
       },
     });
-    console.log(this.state.form);
   };
 
   render() {
