@@ -1,5 +1,6 @@
 const { Router } = require("express");
 const Experiencias = require("../models/Experiencias");
+const { cloudinary } = require("../utils/cloudinary");
 const router = Router();
 
 // Get para mostrar todas las experiencias existentes
@@ -56,6 +57,7 @@ router.post("/", async (req, res) => {
     sala_interactiva,
     imagen_relacionada,
     imagen,
+    public_id,
     id_usuario,
   } = req.body;
   const newExperiencia = new Experiencias({
@@ -64,6 +66,7 @@ router.post("/", async (req, res) => {
     sala_interactiva,
     imagen_relacionada,
     imagen,
+    public_id,
     id_usuario,
   });
   newExperiencia.save();
@@ -73,17 +76,32 @@ router.post("/", async (req, res) => {
 // Actualizar la informacion de una experiencia
 // Funciona
 // Esta en la lista
-router.put("/:id", async (req, res) => {
+router.put("/:id/:public_id_imagen", async (req, res) => {
   const {
     titulo,
     descripcion,
     sala_interactiva,
     imagen_relacionada,
     imagen,
+    public_id,
     id_usuario,
   } = req.body;
   const _id = req.params.id;
   console.log("Id de la experiencia:", _id);
+
+  const public_id_imagen = req.params.public_id_imagen;
+
+  console.log(public_id_imagen, "esta es la public_id_image fuera del if");
+  console.log(public_id, "esta es la public_id fuera del if");
+
+  if (public_id != public_id_imagen) {
+    console.log(public_id_imagen, "esta es la public_id_image dentro del if");
+    console.log(public_id, "esta es la public_id dentro del if");
+    cloudinary.uploader.destroy(public_id_imagen, function (error, resultado) {
+      console.log(resultado, error, "Resultado de la eliminacion de la imagen");
+    });
+  }
+
   Experiencias.findByIdAndUpdate(
     _id,
     {
@@ -101,10 +119,14 @@ router.put("/:id", async (req, res) => {
 // Eliminar una experiencia
 // Funciona
 // Esta en la lista
-router.delete("/:id", async (req, res) => {
+router.delete("/:id/:public_id", async (req, res) => {
   const id = req.params.id;
+  const public_id = req.params.public_id;
+  cloudinary.uploader.destroy(public_id, function (error, resultado) {
+    console.log(resultado, error, "Resultado de la eliminacion de la imagen");
+  });
   const experiencias = await Experiencias.findByIdAndDelete(id);
-  res.json({ message: "Tarea eliminada." });
+  res.json({ message: "Experiencia eliminada." });
 });
 
 module.exports = router;

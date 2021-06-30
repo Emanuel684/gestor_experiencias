@@ -24,6 +24,10 @@ const ExperienciasSchema = new Schema({
     type: String,
     required: true
   },
+  public_id: {
+    type: String,
+    required: true
+  },
   id_usuario: {
     type: Schema.ObjectId,
     ref: "Usuarios",

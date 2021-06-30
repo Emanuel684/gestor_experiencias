@@ -11,6 +11,7 @@ class Inicio_page extends React.Component {
     this.state = {
       File: null,
       imagen: "",
+      public_id_imagen: "",
       form: {
         titulo: "",
         descripcion: "",
@@ -54,7 +55,9 @@ class Inicio_page extends React.Component {
   delete_experiencia = async () => {
     console.log("Esta es el id de la experiencia:", this.state.id_experiencia);
     await axios
-      .delete(`http://localhost:4040/${this.state.id_experiencia}`)
+      .delete(
+        `http://localhost:4040/${this.state.id_experiencia}/${this.state.public_id_imagen}`
+      )
       .then((res) => {
         console.log("Se ha eliminado una experiencia.");
         this.componentWillMount();
@@ -90,15 +93,21 @@ class Inicio_page extends React.Component {
 
   upgrade_experiencia_put = async () => {
     console.log("upgrade imagen:", this.state.imagen);
+    console.log("public_id_imagen:", this.state.public_id_imagen);
     await axios
-      .put(`http://localhost:4040/${this.state.id_experiencia}`, {
-        titulo: this.state.form.titulo,
-        descripcion: this.state.form.descripcion,
-        sala_interactiva: this.state.form.sala_interactiva,
-        imagen_relacionada:/*this.state.form.imagen_relacionada*/ "https://i0.wp.com/evemuseografia.com/wp-content/uploads/2020/12/EVE09122020.jpg?fit=1170%2C696&ssl=1",
-        imagen:this.state.imagen,
-        id_usuario: this.state.id_usuario.id_usuario,
-      })
+      .put(
+        `http://localhost:4040/${this.state.id_experiencia}/${this.state.public_id_imagen}`,
+        {
+          titulo: this.state.form.titulo,
+          descripcion: this.state.form.descripcion,
+          sala_interactiva: this.state.form.sala_interactiva,
+          imagen_relacionada:
+            /*this.state.form.imagen_relacionada*/ "https://i0.wp.com/evemuseografia.com/wp-content/uploads/2020/12/EVE09122020.jpg?fit=1170%2C696&ssl=1",
+          imagen: this.state.imagen,
+          public_id: this.state.public_id,
+          id_usuario: this.state.id_usuario.id_usuario,
+        }
+      )
       .then((res) => {
         console.log("res.data", res.data);
         this.componentWillMount();
@@ -118,8 +127,10 @@ class Inicio_page extends React.Component {
         titulo: this.state.form.titulo,
         descripcion: this.state.form.descripcion,
         sala_interactiva: this.state.form.sala_interactiva,
-        imagen_relacionada: /*this.state.form.imagen_relacionada*/ "https://i0.wp.com/evemuseografia.com/wp-content/uploads/2020/12/EVE09122020.jpg?fit=1170%2C696&ssl=1",
-        imagen:this.state.imagen,
+        imagen_relacionada:
+          /*this.state.form.imagen_relacionada*/ "https://i0.wp.com/evemuseografia.com/wp-content/uploads/2020/12/EVE09122020.jpg?fit=1170%2C696&ssl=1",
+        imagen: this.state.imagen,
+        public_id: this.state.public_id,
         id_usuario: this.state.id_usuario.id_usuario,
       })
       .then((res) => {
@@ -183,9 +194,10 @@ class Inicio_page extends React.Component {
         console.log("Se ha subido una imagen");
         console.log(res);
         document.getElementById("fotoPrev2").src = res.data;
-        console.log(res.data, 'res.data onClickHandler')
+        console.log(res.data, "res.data onClickHandler");
         this.setState({
           imagen: res.data.url,
+          public_id: res.data.public_id,
         });
       })
       .catch((err) => {
@@ -591,6 +603,7 @@ class Inicio_page extends React.Component {
                                   console.log(datosT._id);
                                   await this.setState({
                                     id_experiencia: datosT._id,
+                                    public_id_imagen: datosT.public_id,
                                   });
                                   this.delete_experiencia();
                                 }}
@@ -605,6 +618,7 @@ class Inicio_page extends React.Component {
                                 onClick={async () => {
                                   await this.setState({
                                     id_experiencia: datosT._id,
+                                    public_id_imagen: datosT.public_id,
                                   });
                                   this.upgrade_experiencia_get();
                                 }}
