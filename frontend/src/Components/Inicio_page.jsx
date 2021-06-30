@@ -17,7 +17,6 @@ class Inicio_page extends React.Component {
         titulo: "",
         descripcion: "",
         sala_interactiva: "",
-        imagen_relacionada: "",
         imagen: "",
         id_usuario: "",
       },
@@ -33,22 +32,13 @@ class Inicio_page extends React.Component {
 
   // Consulta a la API para generar las imagenes aleatorias
   get_imagen_relacionada = async () => {
-    console.log(this.state.titulo2, "Titulo2");
-    console.log(this.state.form.titulo, "this.state.form.titulo");
-
     if (this.state.form.titulo == "") {
       this.setState({
         imagen_relacionada_prev: "",
       });
     } else if (this.state.form.titulo != "") {
       var length = this.state.datos_api.length;
-      console.log(length, "length");
       var length_imagen = Math.floor(Math.random() * (length - 0)) + 0;
-      console.log(length_imagen, "length_imagen");
-      console.log(
-        this.state.datos_api[length_imagen],
-        "this.state.datos_api[length_imagen]"
-      );
       this.setState({
         imagen_relacionada_prev:
           this.state.datos_api[length_imagen].jetpack_featured_media_url,
@@ -82,7 +72,6 @@ class Inicio_page extends React.Component {
         [e.target.name]: e.target.value,
       },
     });
-    console.log("handleChange", this.state.form);
     if (this.state.titulo2 != this.state.form.titulo) {
       this.get_imagen_relacionada();
     }
@@ -98,17 +87,23 @@ class Inicio_page extends React.Component {
       imagen: this.state.form.imagen,
       id_usuario: this.state.form.id_usuario,
     };
-    console.log("handleSubmit:", experiencia);
   };
 
   delete_experiencia = async () => {
-    console.log("Esta es el id de la experiencia:", this.state.id_experiencia);
     await axios
       .delete(
         `http://localhost:4040/${this.state.id_experiencia}/${this.state.public_id_imagen}`
       )
       .then((res) => {
         console.log("Se ha eliminado una experiencia.");
+
+        document.getElementById("id-delete-experiencia").style.display =
+          "block";
+        setTimeout(function () {
+          document.getElementById("id-delete-experiencia").style.display =
+            "none";
+        }, 3000);
+
         this.componentWillMount();
       })
       .catch((err) => {
@@ -141,8 +136,6 @@ class Inicio_page extends React.Component {
   };
 
   upgrade_experiencia_put = async () => {
-    console.log("upgrade imagen:", this.state.imagen);
-    console.log("public_id_imagen:", this.state.public_id_imagen);
     await axios
       .put(
         `http://localhost:4040/${this.state.id_experiencia}/${this.state.public_id_imagen}`,
@@ -150,15 +143,13 @@ class Inicio_page extends React.Component {
           titulo: this.state.form.titulo,
           descripcion: this.state.form.descripcion,
           sala_interactiva: this.state.form.sala_interactiva,
-          imagen_relacionada:
-            /*this.state.form.imagen_relacionada*/ "https://i0.wp.com/evemuseografia.com/wp-content/uploads/2020/12/EVE09122020.jpg?fit=1170%2C696&ssl=1",
+          imagen_relacionada: this.state.imagen_relacionada_prevqq,
           imagen: this.state.imagen,
           public_id: this.state.public_id,
           id_usuario: this.state.id_usuario.id_usuario,
         }
       )
       .then((res) => {
-        console.log("res.data", res.data);
         this.componentWillMount();
       })
       .catch((err) => {
@@ -168,29 +159,32 @@ class Inicio_page extends React.Component {
 
   //Petición post para agregar nuevas experiencias
   post_experiencia = async () => {
-    console.log("imagen post", this.state.form.imagen);
-    console.log("formulario post:", this.state.form);
-    console.log("imagen", this.state.imagen);
     await axios
       .post(`http://localhost:4040/`, {
         titulo: this.state.form.titulo,
         descripcion: this.state.form.descripcion,
         sala_interactiva: this.state.form.sala_interactiva,
-        imagen_relacionada:
-          /*this.state.form.imagen_relacionada*/ "https://i0.wp.com/evemuseografia.com/wp-content/uploads/2020/12/EVE09122020.jpg?fit=1170%2C696&ssl=1",
+        imagen_relacionada: this.state.imagen_relacionada_prev,
         imagen: this.state.imagen,
         public_id: this.state.public_id,
         id_usuario: this.state.id_usuario.id_usuario,
       })
       .then((res) => {
-        console.log("Se ha creado una nueva experiencia.");
         document.getElementById("titulo-input-create").value = "";
         document.getElementById("descripcion-textearea-create").value = "";
         document.getElementById("sala_interactiva-select-create").value = "";
         document.getElementById("imagen-input-create").value = "";
         this.setState({
           imagen: "",
+          titulo2: "",
+          imagen_relacionada_prev: "",
         });
+
+        document.getElementById("id-new-experiencia").style.display = "block";
+        setTimeout(function () {
+          document.getElementById("id-new-experiencia").style.display = "none";
+        }, 3000);
+
         this.componentWillMount();
       })
       .catch((err) => {
@@ -263,10 +257,8 @@ class Inicio_page extends React.Component {
   };
 
   render() {
-    console.log(this.state.datos);
     const experienciasUsuario = this.state.datos_experiencias;
     const imagenes_relacionadas_api = this.state.datos_api;
-    console.log(imagenes_relacionadas_api, "imagenes_relacionadas_api");
 
     return (
       <>
@@ -291,6 +283,11 @@ class Inicio_page extends React.Component {
                   className="close"
                   data-dismiss="modal"
                   aria-label="Close"
+                  onClick={async () => {
+                    await this.setState({
+                      imagen: ""
+                    });
+                  }}
                 >
                   <span aria-hidden="true">&times;</span>
                 </button>
@@ -375,7 +372,7 @@ class Inicio_page extends React.Component {
                     </div>
 
                     <div className="col-12">
-                      <label for="address" className="form-label">
+                      <label for="imagen_experiencia" className="form-label">
                         Imagen
                       </label>
 
@@ -390,9 +387,9 @@ class Inicio_page extends React.Component {
                       <div className="foto-experiencia-img">
                         <img
                           className="foto-experiencia-img-ver"
-                          id="fotoPrev1"
+                          id="fotoPrev"
                           src={this.state.imagen}
-                          alt="FOTO"
+                          alt="Imagen"
                         />
                       </div>
                       <div className="foto-tarea-img">
@@ -635,6 +632,25 @@ class Inicio_page extends React.Component {
         </header>
 
         <main>
+          <div>
+            <div
+              className="alert alert-success"
+              id="id-new-experiencia"
+              role="alert"
+            >
+              Nueva experiencia agregada.
+            </div>
+            <div
+              class="alert alert-danger"
+              id="id-delete-experiencia"
+              role="alert"
+            >
+              Experiencia correctamente eliminada.
+            </div>
+            <div class="alert alert-info" id="id-update-experiencia" role="alert">
+              Experiencia actualizada correctamente.
+            </div>
+          </div>
           <div className="album py-5 bg-light">
             <div className="container">
               <h1>Experiencias</h1>

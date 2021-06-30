@@ -1,48 +1,60 @@
 .col {
-    padding-bottom: 25px;
+  padding-bottom: 25px;
 }
-.foto-experiencia-img{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    margin-top: 10px;
-}
-
-.foto-experiencia-img-ver{
-    border-radius: 13px;
-    width: 200px;
-    height: 200px;
+.foto-experiencia-img {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin-top: 10px;
 }
 
-.btnimgUploader{
-    font-weight: bold;
-    padding-left: 3%;
-    padding-right: 3%;
+.foto-experiencia-img-ver {
+  border-radius: 13px;
+  width: 200px;
+  height: 200px;
 }
 
-.botones-inferiores{
-    padding-top: 10px;
-    grid-gap: 10px;
-    font-weight: bold;
+.btnimgUploader {
+  font-weight: bold;
+  padding-left: 3%;
+  padding-right: 3%;
 }
 
-.btn{
-    border-radius: 3px;
-    font-weight: bold;
+.botones-inferiores {
+  padding-top: 10px;
+  grid-gap: 10px;
+  font-weight: bold;
 }
 
-.img-relacionada{
-    border-radius: 10px;
-    width: 70%;
-    height: 70%;
+.btn {
+  border-radius: 3px;
+  font-weight: bold;
 }
 
-.card-text{
-    color: black;
+.img-relacionada {
+  border-radius: 10px;
+  width: 70%;
+  height: 70%;
 }
 
-.h6-card{
-    color: black;
-    font-weight: bold;
+.card-text {
+  color: black;
+}
+
+.h6-card {
+  color: black;
+  font-weight: bold;
+}
+
+#id-new-experiencia {
+  display: none;
+}
+
+#id-delete-experiencia {
+  display: none;
+}
+
+#id-update-experiencia {
+  display: none;
 }
