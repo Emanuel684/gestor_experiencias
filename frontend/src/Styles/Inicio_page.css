@@ -1,6 +1,16 @@
+body::-webkit-scrollbar {
+	width: 7px;
+}
+
+body::-webkit-scrollbar-thumb {
+	background: #6f42c1;
+	border-radius: 5px;
+}
+
 .col {
   padding-bottom: 25px;
 }
+
 .foto-experiencia-img {
   display: flex;
   align-items: center;
@@ -30,12 +40,14 @@
 .btn {
   border-radius: 3px;
   font-weight: bold;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
 }
 
 .img-relacionada {
   border-radius: 10px;
   width: 70%;
   height: 70%;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
 }
 
 .card-text {
@@ -57,4 +69,17 @@
 
 #id-update-experiencia {
   display: none;
+}
+
+.imagen-card-superior {
+  border-radius: 10px;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+.div-imagen-relacionada {
+  text-align: center;
+}
+
+.navbar-purple {
+  height: 65px;
 }

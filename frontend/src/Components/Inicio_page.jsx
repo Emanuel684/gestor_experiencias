@@ -17,6 +17,7 @@ class Inicio_page extends React.Component {
         titulo: "",
         descripcion: "",
         sala_interactiva: "",
+        imagen_relacionada: "",
         imagen: "",
         id_usuario: "",
       },
@@ -285,7 +286,8 @@ class Inicio_page extends React.Component {
                   aria-label="Close"
                   onClick={async () => {
                     await this.setState({
-                      imagen: ""
+                      imagen: "",
+                      imagen_relacionada_prev: ""
                     });
                   }}
                 >
@@ -301,7 +303,7 @@ class Inicio_page extends React.Component {
                   <div className="row g-3">
                     <div className="col-12">
                       <label for="titulo" className="form-label">
-                        Titulo
+                      <strong>Titulo</strong>
                       </label>
                       <input
                         type="text"
@@ -315,7 +317,7 @@ class Inicio_page extends React.Component {
 
                     <div className="col-12">
                       <label for="Descripcion" className="form-label">
-                        Descripcion
+                      <strong>Descripcion</strong>
                       </label>
                       <textarea
                         type="text"
@@ -329,7 +331,7 @@ class Inicio_page extends React.Component {
 
                     <div className="col-12">
                       <label for="sala_interactiva" className="form-label">
-                        Sala interactiva
+                      <strong>Sala interactiva</strong>
                       </label>
 
                       <select
@@ -358,14 +360,14 @@ class Inicio_page extends React.Component {
 
                     <div className="col-12">
                       <label for="email" className="form-label">
-                        Imagen relacionada
+                      <strong>Imagen relacionada</strong>
                       </label>
 
                       <div className="foto-experiencia-img">
                         <img
                           className="foto-experiencia-img-ver"
                           id="fotoPrev2"
-                          src={this.state.form.imagen_relacionada}
+                          src={this.state.imagen_relacionada_prev || this.state.form.imagen_relacionada}
                           alt="Imagen"
                         />
                       </div>
@@ -373,7 +375,7 @@ class Inicio_page extends React.Component {
 
                     <div className="col-12">
                       <label for="imagen_experiencia" className="form-label">
-                        Imagen
+                        <strong>Imagen</strong>
                       </label>
 
                       <input
@@ -392,7 +394,7 @@ class Inicio_page extends React.Component {
                           alt="Imagen"
                         />
                       </div>
-                      <div className="foto-tarea-img">
+                      <div className="foto-experiencia-img">
                         <button
                           type="button"
                           className="btn btnimgUploader btn-primary"
@@ -460,7 +462,7 @@ class Inicio_page extends React.Component {
                   <div className="row g-3">
                     <div className="col-12">
                       <label for="titulo" className="form-label">
-                        Titulo
+                      <strong>Titulo</strong>
                       </label>
                       <input
                         type="text"
@@ -474,7 +476,7 @@ class Inicio_page extends React.Component {
 
                     <div className="col-12">
                       <label for="Descripcion" className="form-label">
-                        Descripcion
+                      <strong>Descripcion</strong>
                       </label>
                       <textarea
                         type="text"
@@ -488,7 +490,7 @@ class Inicio_page extends React.Component {
 
                     <div className="col-12">
                       <label for="sala_interactiva" className="form-label">
-                        Sala interactiva
+                      <strong>Sala interactiva</strong>
                       </label>
 
                       <select
@@ -516,10 +518,10 @@ class Inicio_page extends React.Component {
 
                     <div className="col-12">
                       <label for="imagen_relacionada" className="form-label">
-                        Imagen relacionada
+                      <strong>Imagen relacionada</strong>
                       </label>
 
-                      <div className="foto-tarea-img">
+                      <div className="foto-experiencia-img">
                         <img
                           className="foto-experiencia-img-ver"
                           id="ImagenPrevRelacionada"
@@ -534,7 +536,7 @@ class Inicio_page extends React.Component {
 
                     <div className="col-12">
                       <label for="file" className="form-label">
-                        Imagen
+                      <strong>Imagen</strong>
                       </label>
 
                       <input
@@ -592,7 +594,7 @@ class Inicio_page extends React.Component {
         {/* FIN MODAL */}
 
         <header>
-          <div className="navbar navbar-dark bg-dark shadow-sm">
+          <div className="navbar navbar-purple bg-dark shadow-sm">
             <div className="container">
               <Link to="/">
                 <div
@@ -669,17 +671,21 @@ class Inicio_page extends React.Component {
                           stroke-linejoin="round"
                           stroke-width="2"
                           aria-hidden="true"
-                          className="me-2"
+                          className="me-2 imagen-card-superior"
                           viewBox="0 0 24 24"
                         />
 
                         <div className="card-body">
-                          <h6 className="h6-card">Titulo:</h6>
-                          <p className="card-text">{datosT.titulo}</p>
-                          <h6 className="h6-card">Descripcion:</h6>
+                          <div>
+                          <h5 className="h6-card">{datosT.titulo}</h5>
+                          </div>
+                          <div>
                           <p className="card-text">{datosT.descripcion}</p>
-                          <h6 className="h6-card">Sala interactiva</h6>
-                          <p className="card-text">{datosT.sala_interactiva}</p>
+                          </div>
+                          <div>
+                          <p className="card-text"><strong>Sala interactiva:</strong> {datosT.sala_interactiva}</p>
+                          </div>
+                          <div className="div-imagen-relacionada">
                           <img
                             src={datosT.imagen_relacionada}
                             width="100%"
@@ -693,6 +699,7 @@ class Inicio_page extends React.Component {
                             className="me-2 img-relacionada"
                             viewBox="0 0 24 24"
                           />
+                          </div>
                           <div className="d-flex justify-content-between align-items-center">
                             <div className="btn-group botones-inferiores">
                               <button
