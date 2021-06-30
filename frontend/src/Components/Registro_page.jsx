@@ -1,8 +1,6 @@
 import React from "react";
 import axios from "axios";
 
-import "../Styles/Registro_page.css";
-
 import { Redirect, Link } from "react-router-dom";
 
 class Login_usuarios extends React.Component {

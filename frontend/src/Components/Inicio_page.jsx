@@ -264,7 +264,7 @@ class Inicio_page extends React.Component {
                   onClick={async () => {
                     await this.setState({
                       imagen: "",
-                      imagen_relacionada_prev: "",
+                      imagen_relacionada_prev: ""
                     });
                   }}
                 >
@@ -280,7 +280,7 @@ class Inicio_page extends React.Component {
                   <div className="row g-3">
                     <div className="col-12">
                       <label for="titulo" className="form-label">
-                        <strong>Titulo</strong>
+                      <strong>Titulo</strong>
                       </label>
                       <input
                         type="text"
@@ -294,7 +294,7 @@ class Inicio_page extends React.Component {
 
                     <div className="col-12">
                       <label for="Descripcion" className="form-label">
-                        <strong>Descripcion</strong>
+                      <strong>Descripcion</strong>
                       </label>
                       <textarea
                         type="text"
@@ -308,7 +308,7 @@ class Inicio_page extends React.Component {
 
                     <div className="col-12">
                       <label for="sala_interactiva" className="form-label">
-                        <strong>Sala interactiva</strong>
+                      <strong>Sala interactiva</strong>
                       </label>
 
                       <select
@@ -337,17 +337,14 @@ class Inicio_page extends React.Component {
 
                     <div className="col-12">
                       <label for="email" className="form-label">
-                        <strong>Imagen relacionada</strong>
+                      <strong>Imagen relacionada</strong>
                       </label>
 
                       <div className="foto-experiencia-img">
                         <img
                           className="foto-experiencia-img-ver"
                           id="fotoPrev2"
-                          src={
-                            this.state.imagen_relacionada_prev ||
-                            this.state.form.imagen_relacionada
-                          }
+                          src={this.state.imagen_relacionada_prev || this.state.form.imagen_relacionada}
                           alt="Imagen"
                         />
                       </div>
@@ -442,7 +439,7 @@ class Inicio_page extends React.Component {
                   <div className="row g-3">
                     <div className="col-12">
                       <label for="titulo" className="form-label">
-                        <strong>Titulo</strong>
+                      <strong>Titulo</strong>
                       </label>
                       <input
                         type="text"
@@ -456,7 +453,7 @@ class Inicio_page extends React.Component {
 
                     <div className="col-12">
                       <label for="Descripcion" className="form-label">
-                        <strong>Descripcion</strong>
+                      <strong>Descripcion</strong>
                       </label>
                       <textarea
                         type="text"
@@ -470,7 +467,7 @@ class Inicio_page extends React.Component {
 
                     <div className="col-12">
                       <label for="sala_interactiva" className="form-label">
-                        <strong>Sala interactiva</strong>
+                      <strong>Sala interactiva</strong>
                       </label>
 
                       <select
@@ -498,7 +495,7 @@ class Inicio_page extends React.Component {
 
                     <div className="col-12">
                       <label for="imagen_relacionada" className="form-label">
-                        <strong>Imagen relacionada</strong>
+                      <strong>Imagen relacionada</strong>
                       </label>
 
                       <div className="foto-experiencia-img">
@@ -516,7 +513,7 @@ class Inicio_page extends React.Component {
 
                     <div className="col-12">
                       <label for="file" className="form-label">
-                        <strong>Imagen</strong>
+                      <strong>Imagen</strong>
                       </label>
 
                       <input
@@ -629,11 +626,7 @@ class Inicio_page extends React.Component {
             >
               Experiencia correctamente eliminada.
             </div>
-            <div
-              class="alert alert-info"
-              id="id-update-experiencia"
-              role="alert"
-            >
+            <div class="alert alert-info" id="id-update-experiencia" role="alert">
               Experiencia actualizada correctamente.
             </div>
           </div>
@@ -661,31 +654,28 @@ class Inicio_page extends React.Component {
 
                         <div className="card-body">
                           <div>
-                            <h5 className="h6-card">{datosT.titulo}</h5>
+                          <h5 className="h6-card">{datosT.titulo}</h5>
                           </div>
                           <div>
-                            <p className="card-text">{datosT.descripcion}</p>
+                          <p className="card-text">{datosT.descripcion}</p>
                           </div>
                           <div>
-                            <p className="card-text">
-                              <strong>Sala interactiva:</strong>{" "}
-                              {datosT.sala_interactiva}
-                            </p>
+                          <p className="card-text"><strong>Sala interactiva:</strong> {datosT.sala_interactiva}</p>
                           </div>
                           <div className="div-imagen-relacionada">
-                            <img
-                              src={datosT.imagen_relacionada}
-                              width="100%"
-                              height="225"
-                              fill="none"
-                              stroke="currentColor"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                              stroke-width="2"
-                              aria-hidden="true"
-                              className="me-2 img-relacionada"
-                              viewBox="0 0 24 24"
-                            />
+                          <img
+                            src={datosT.imagen_relacionada}
+                            width="100%"
+                            height="225"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            aria-hidden="true"
+                            className="me-2 img-relacionada"
+                            viewBox="0 0 24 24"
+                          />
                           </div>
                           <div className="d-flex justify-content-between align-items-center">
                             <div className="btn-group botones-inferiores">
