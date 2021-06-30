@@ -20,3 +20,29 @@
     padding-left: 3%;
     padding-right: 3%;
 }
+
+.botones-inferiores{
+    padding-top: 10px;
+    grid-gap: 10px;
+    font-weight: bold;
+}
+
+.btn{
+    border-radius: 3px;
+    font-weight: bold;
+}
+
+.img-relacionada{
+    border-radius: 10px;
+    width: 70%;
+    height: 70%;
+}
+
+.card-text{
+    color: black;
+}
+
+.h6-card{
+    color: black;
+    font-weight: bold;
+}

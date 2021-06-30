@@ -2,20 +2,20 @@ const request = require("supertest");
 const faker = require("faker");
 const dateformat = require("dateformat");
 const app = require("../app");
-const Tareas = require("../models/Tareas");
+const Experiencias = require("../models/Experiencias");
 
-describe("Validacion de las peticiones de las tareas", () => {
+describe("Validacion de las peticiones de las experiencias", () => {
   beforeEach(async () => {
-    await Tareas.deleteMany({});
+    await Experiencias.deleteMany({});
   });
 
   afterEach(async () => {
-    console.log("afterEach_Tarea");
+    console.log("afterEach_Experiencia");
   });
 
-  test("Verificar creacion de una tarea", async () => {
+  test("Verificar creacion de una experiencia", async () => {
     await request(app)
-      .post("/new-tarea")
+      .post("/")
       .send({
         nombre: "Matematicas",
         foto:
@@ -27,9 +27,9 @@ describe("Validacion de las peticiones de las tareas", () => {
       .expect(200);
   });
 
-  test("Verificar consulta de todas las tareas", function (done) {
+  test("Verificar consulta de todas las experiencias", function (done) {
     request(app)
-      .get("/all-tareas")
+      .get("/")
       .expect(200)
       .end(function (err, res) {
         if (err) return done(err);
@@ -37,7 +37,7 @@ describe("Validacion de las peticiones de las tareas", () => {
       });
   });
 
-  test("Consultar los datos de una tarea", function (done) {
+  test("Consultar los datos de una experiencia", function (done) {
     request(app)
       .get("/tarea-upgrade-usuario/603161a28385130f40d518cc")
       .expect(200)
@@ -47,7 +47,7 @@ describe("Validacion de las peticiones de las tareas", () => {
       });
   });
 
-  test("Consultar todas las tareas que existen de un usuario para prioridad alta", function (done) {
+  test("Consultar todas las experiencias que existen de un usuario", function (done) {
     request(app)
       .get("/all-tareas-usuario-alta/603161a28385130f40d518cc")
       .expect(200)
@@ -57,27 +57,7 @@ describe("Validacion de las peticiones de las tareas", () => {
       });
   });
 
-  test("Consultar todas las tareas que existen de un usuario para prioridad media", function (done) {
-    request(app)
-      .get("/all-tareas-usuario-media/603161a28385130f40d518cc")
-      .expect(200)
-      .end(function (err, res) {
-        if (err) return done(err);
-        return done();
-      });
-  });
-
-  test("Consultar todas las tareas que existen de un usuario para prioridad baja", function (done) {
-    request(app)
-      .get("/all-tareas-usuario-baja/603161a28385130f40d518cc")
-      .expect(200)
-      .end(function (err, res) {
-        if (err) return done(err);
-        return done();
-      });
-  });
-
-  test("Actualizar la informacion de una tarea", async () => {
+  test("Actualizar la informacion de una experiencia", async () => {
     await request(app)
       .put("/info-tarea/603161a28385130f40d518cc")
       .send({
@@ -91,7 +71,7 @@ describe("Validacion de las peticiones de las tareas", () => {
       .expect(200);
   });
 
-  test("Eliminar una tarea", function (done) {
+  test("Eliminar una experiencia", function (done) {
     request(app)
       .delete("/delete-tarea/603161a28385130f40d518cc")
       .expect(200)
