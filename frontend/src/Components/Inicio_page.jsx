@@ -146,7 +146,13 @@ class Inicio_page extends React.Component {
         }
       )
       .then((res) => {
-        this.componentWillMount();
+
+        document.getElementById("id-update-experiencia").style.display = "block";
+        setTimeout(function () {
+          document.getElementById("id-update-experiencia").style.display = "none";
+        }, 3000);
+        
+        this.componentWillMount();  
       })
       .catch((err) => {
         console.log(err.massage);

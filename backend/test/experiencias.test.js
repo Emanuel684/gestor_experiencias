@@ -17,11 +17,15 @@ describe("Validacion de las peticiones de las experiencias", () => {
     await request(app)
       .post("/")
       .send({
-        nombre: "Matematicas",
-        foto:
-          "https://storage.googleapis.com/bucket-gestor-tareas/0a7e80a3-61ef-4c71-8f4d-2b1218130b90.jpg",
-        prioridad: "Alta",
-        fecha_vencimiento: "2021-03-21",
+        titulo: "Creando cuerpos",
+        descripcion:
+          "Esta es la descripcion de como funciona la fisica del tiempo, esta descripcion es donde el usuario hablara sobre como funciona el tiempo y la leyes de la fisica que lo explican de una forma mas detallada.",
+        sala_interactiva: "Tiempo, más allá del reloj",
+        imagen_relacionada:
+          "https://encasa.parqueexplora.org/wp-content/uploads/2021/04/THUMB-LIQUIDOS-QUE-ESCALAN-EN-CASA.png",
+        public_id: "d2vwarrpzuxwlwgh464q",
+        imagen:
+          "http://res.cloudinary.com/dftuaxhsq/image/upload/v1625091388/d2vwarrpzuxwlwgh464q.png",
         id_usuario: null,
       })
       .expect(200);
@@ -39,7 +43,7 @@ describe("Validacion de las peticiones de las experiencias", () => {
 
   test("Consultar los datos de una experiencia", function (done) {
     request(app)
-      .get("/tarea-upgrade-usuario/603161a28385130f40d518cc")
+      .get("/60dced7c743d7428c8aea2ba")
       .expect(200)
       .end(function (err, res) {
         if (err) return done(err);
@@ -49,7 +53,7 @@ describe("Validacion de las peticiones de las experiencias", () => {
 
   test("Consultar todas las experiencias que existen de un usuario", function (done) {
     request(app)
-      .get("/all-tareas-usuario-alta/603161a28385130f40d518cc")
+      .get("/all-experiencias-usuario/60da92d3fc812533e8b679a3")
       .expect(200)
       .end(function (err, res) {
         if (err) return done(err);
@@ -59,13 +63,17 @@ describe("Validacion de las peticiones de las experiencias", () => {
 
   test("Actualizar la informacion de una experiencia", async () => {
     await request(app)
-      .put("/info-tarea/603161a28385130f40d518cc")
+      .put("/60dced7c743d7428c8aea2ba")
       .send({
-        nombre: "Matematicas",
-        foto:
-          "https://storage.googleapis.com/bucket-gestor-tareas/0a7e80a3-61ef-4c71-8f4d-2b1218130b90.jpg",
-        prioridad: "Alta",
-        fecha_vencimiento: "2021-03-21",
+        titulo: "Creando cuerpos",
+        descripcion:
+          "Esta es la descripcion de como funciona la fisica del tiempo, esta descripcion es donde el usuario hablara sobre como funciona el tiempo y la leyes de la fisica que lo explican de una forma mas detallada.",
+        sala_interactiva: "Tiempo, más allá del reloj",
+        imagen_relacionada:
+          "https://encasa.parqueexplora.org/wp-content/uploads/2021/04/THUMB-LIQUIDOS-QUE-ESCALAN-EN-CASA.png",
+        public_id: "d2vwarrpzuxwlwgh464q",
+        imagen:
+          "http://res.cloudinary.com/dftuaxhsq/image/upload/v1625091388/d2vwarrpzuxwlwgh464q.png",
         id_usuario: null,
       })
       .expect(200);
@@ -73,7 +81,7 @@ describe("Validacion de las peticiones de las experiencias", () => {
 
   test("Eliminar una experiencia", function (done) {
     request(app)
-      .delete("/delete-tarea/603161a28385130f40d518cc")
+      .delete("/60dced7c743d7428c8aea2ba")
       .expect(200)
       .end(function (err, res) {
         if (err) return done(err);
